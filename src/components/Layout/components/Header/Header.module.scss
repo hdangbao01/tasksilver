@@ -1,0 +1,23 @@
+.wrapper {
+    width: 100%;
+    height: var(--default-header-height);
+    box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
+    display: flex;
+    justify-content: center;
+}
+
+.menu-bar {
+    height: 100%;
+    width: var(--default-width);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    color: var(--text-btn-red);
+    font-size: 4rem;
+    font-weight: 600;
+}
+
+.header-logo {
+    height: calc(var(--default-header-height) - 10px);
+}

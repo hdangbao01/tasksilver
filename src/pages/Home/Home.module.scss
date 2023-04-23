@@ -1,0 +1,20 @@
+.content {        
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    align-items: center;
+    color: white;
+}
+
+.header-content {
+    width: 100%;
+    height: calc(100vh - var(--default-header-height));
+    min-height: 545px;
+    background-color: gray;
+}
+
+.body-content {
+    width: var(--default-width);
+    background-color: green;
+    min-height: 500px;
+}

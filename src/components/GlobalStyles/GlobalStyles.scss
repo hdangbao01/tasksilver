@@ -1,0 +1,48 @@
+@import 'normalize.css';
+
+:root {
+    --primary: #667985;
+    --btn-light: #32424B;
+    --text-btn-light: #F7D5B1;
+    --btn-dark: #DBD6CB;
+    --text-btn-dark: #171717;
+    --default-width: 1150px;
+    --default-header-height: 80px;
+    --font-family: 'Alegreya', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    line-height: 1.5;
+    font-family: var(--font-family);
+    text-rendering: optimizeSpeed;
+}
+
+// Import Font
+@font-face {
+    font-family: Alegreya;
+    src: url(../../assets/fonts/AlegreyaSans-Light.ttf);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Alegreya;
+    src: url(../../assets/fonts/AlegreyaSans-Regular.ttf);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Alegreya;
+    src: url(../../assets/fonts/AlegreyaSans-Medium.ttf);
+    font-weight: 600;
+}
