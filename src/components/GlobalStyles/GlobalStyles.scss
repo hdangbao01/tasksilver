@@ -1,13 +1,13 @@
 @import 'normalize.css';
 
 :root {
-    --primary: #667985;
+    --primary: #cecece;
+    --primary-dark: #282828;
+    --text-color: white;
     --btn-light: #32424B;
-    --text-btn-light: #F7D5B1;
-    --btn-dark: #DBD6CB;
-    --text-btn-dark: #171717;
+    --btn-dark: #246fb4;
     --default-width: 1150px;
-    --default-header-height: 80px;
+    --default-header-height: 100px;
     --font-family: 'Alegreya', sans-serif;
 }
 
@@ -45,4 +45,15 @@ body {
     font-family: Alegreya;
     src: url(../../assets/fonts/AlegreyaSans-Medium.ttf);
     font-weight: 600;
+}
+
+@font-face {
+    font-family: Alegreya;
+    src: url(../../assets/fonts/AlegreyaSans-Bold.ttf);
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: Plank;
+    src: url(../../assets/fonts/Plank.ttf);
 }

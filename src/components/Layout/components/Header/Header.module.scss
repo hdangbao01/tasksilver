@@ -1,23 +1,111 @@
 .wrapper {
     width: 100%;
-    height: var(--default-header-height);
-    box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
+    height: calc(var(--default-header-height) + 20px);
     display: flex;
     justify-content: center;
+    position: fixed;
+    transition: all 0.4s ease;
+}
+
+.fixed {
+    background-color: black;
 }
 
 .menu-bar {
-    height: 100%;
+    height: calc(100% - 20px);
     width: var(--default-width);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 10px 0;
+}
 
-    color: var(--text-btn-red);
-    font-size: 4rem;
-    font-weight: 600;
+.menu-nav,
+.menu-logo,
+.menu-contact {
+    flex: 1;
+}
+
+.menu-list {
+    display: flex;
+
+    .active {
+        border-bottom: 2px solid;
+        color: var(--primary);
+    }
+}
+
+.router-item {
+    text-decoration: none;
+}
+
+.menu-item {
+    cursor: pointer;
+    list-style: none;
+    margin-right: 20px;
+    color: var(--text-color);
+
+    &:hover {
+        color: var(--primary);
+    }
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: var(--default-header-height);
 }
 
 .header-logo {
-    height: calc(var(--default-header-height) - 10px);
+    cursor: pointer;
+    height: calc(var(--default-header-height) - 30px);
+}
+
+.header-title-logo {
+    cursor: pointer;
+    font-family: 'Plank', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    line-height: calc(var(--default-header-height) - 70px);;
+    color: var(--text-color);
+    flex-direction: column;
+}
+
+.menu-contact {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.menu-contact-icon-list {
+    display: flex;
+    color: var(--text-color);
+}
+
+.menu-contact-icon-item {
+    display: flex;
+    font-size: 1.6rem;
+    align-items: center;
+    list-style: none;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.menu-btn-contact {
+    cursor: pointer;
+    background-color: var(--btn-dark);
+    color: var(--text-color);
+    font-size: 1.6rem;
+    font-weight: 600;
+    padding: 15px 25px;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    margin-left: 20px;
+
+    &:hover {
+        opacity: 0.88;
+    }
 }
