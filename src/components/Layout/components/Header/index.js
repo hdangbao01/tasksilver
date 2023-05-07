@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { BsInstagram } from "react-icons/bs";
 import { ImFacebook } from "react-icons/im";
 import { FaLinkedinIn } from "react-icons/fa";
+import { BiChevronDown } from "react-icons/bi";
 
 const cx = classNames.bind(styles)
 
@@ -13,7 +14,7 @@ function Header() {
     const [offset, setOffset] = useState(0)
     const [isMenu, setIsMenu] = useState(false)
 
-    // Scroll
+    // Window Scroll
     useEffect(() => {
         const onScroll = () => setOffset(window.pageYOffset)
 
@@ -24,7 +25,7 @@ function Header() {
     }, []);
     // Active Backgound Menu
     useEffect(() => {
-        if (offset > 150) {
+        if (offset > 1) {
             setIsMenu(true)
         } else {
             setIsMenu(false)
@@ -42,7 +43,7 @@ function Header() {
                         <Link to='/services' className={cx('router-item')}>
                             <li className={cx('menu-item')}>Services</li>
                         </Link>
-                        <Link to='/profile' className={cx('router-item')}>
+                        <Link to='/location' className={cx('router-item')}>
                             <li className={cx('menu-item')}>Location</li>
                         </Link>
                     </ul>
@@ -57,6 +58,9 @@ function Header() {
                         <Link to='/login'>
                             <button className={cx('menu-btn-contact')}>Log in</button>
                         </Link>
+                        {/* <div className={cx('menu-profile')}>
+                            <p className={cx('menu-profile-name')}>Ho Bao</p><span><BiChevronDown className={cx('menu-profile-btn')} /></span>
+                        </div> */}
                     </div>
                     <div className={cx('menu-contact-icon')}>
                         <ul className={cx('menu-contact-icon-list')}>

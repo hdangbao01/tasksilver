@@ -1,7 +1,6 @@
-import Header from "~/components/Layout/components/Header"
-import Footer from "~/components/Layout/components/Footer"
+import Header from "~/components/Layout/components/Header";
 import classNames from 'classnames/bind'
-import styles from './DefaultLayout.module.scss'
+import styles from './NoHeader.module.scss'
 
 const cx = classNames.bind(styles)
 
@@ -10,9 +9,8 @@ function DefaultLayout({ children }) {
         <div className={cx('wrapper')}>
             <Header />
             <div className={cx('container')}>
-                {children}
+                { children }
             </div>
-            <Footer />
         </div>
     )
 }

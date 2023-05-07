@@ -1,0 +1,87 @@
+.profile-wrapper {
+    width: 100%;
+    background-color: black;
+    padding-top: calc(var(--default-header-height) + 20px);
+}
+
+.profile-first {
+    width: 100%;
+    background-color: var(--bg-light);
+}
+
+.profile-main {
+    width: var(--default-width);
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+.profile-header {
+    display: flex;
+    background: linear-gradient(315deg, rgb(112, 146, 156) 0%, rgb(230, 132, 110) 100%);
+    padding: 30px 0;
+}
+
+.profile-avatar {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    margin: 0 30px;
+}
+
+.profile-bar {
+    border-bottom: 1px solid var(--primary);
+    margin: 0 30px;
+
+    h3 {
+        font-size: 2.4rem;
+        font-weight: 600;
+        margin: 20px 0;
+    }
+
+    p {
+        font-size: 2rem;
+        font-weight: 500;
+    }
+    
+    ul {
+        height: 50px;
+        display: flex;
+        align-items: center;
+
+        li {
+            list-style: none;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-right: 30px;
+        }
+    }
+}
+
+.active {
+    color: var(--text-dark);
+}
+
+.hiried {
+    display: flex;
+    margin-bottom: 20px;
+    position: relative;
+
+    img {
+        width: 150px;
+        height: 150px;
+        border: 1px solid var(--primary);
+        margin-right: 20px;
+    }
+}
+
+.hiried-name {
+    margin-top: 0;
+    font-weight: 600;
+}
+
+.hiried-time {
+    position: absolute;
+    right: 0;
+}
