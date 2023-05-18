@@ -2,15 +2,18 @@ import classNames from 'classnames/bind'
 import styles from './Header.module.scss'
 import images from '~/assets/images'
 import { BrowserRouter as Router, Link } from 'react-router-dom'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { BsInstagram } from "react-icons/bs";
 import { ImFacebook } from "react-icons/im";
 import { FaLinkedinIn } from "react-icons/fa";
 import { BiChevronDown } from "react-icons/bi";
+import { AiOutlineUser } from "react-icons/ai";
+import { HiOutlineLogout } from "react-icons/hi";
 
 const cx = classNames.bind(styles)
 
 function Header() {
+    const user = localStorage.getItem("user")
     const [offset, setOffset] = useState(0)
     const [isMenu, setIsMenu] = useState(false)
 
@@ -32,13 +35,18 @@ function Header() {
         }
     }, [offset]);
 
+    const handleLogout = () => {
+        localStorage.removeItem("user")
+        window.location.reload()
+    }
+
     return (
         <header className={cx('wrapper', { 'fixed': isMenu })}>
             <div className={cx('menu-bar')}>
                 <div className={cx('menu-nav')}>
                     <ul className={cx('menu-list')}>
                         <Link to='/' className={cx('router-item')}>
-                            <li className={cx('menu-item', { 'active': true })}>Home</li>
+                            <li className={cx('menu-item', 'active')}>Home</li>
                         </Link>
                         <Link to='/services' className={cx('router-item')}>
                             <li className={cx('menu-item')}>Services</li>
@@ -55,19 +63,35 @@ function Header() {
                 </div>
                 <div className={cx('menu-contact')}>
                     <div>
-                        <Link to='/login'>
-                            <button className={cx('menu-btn-contact')}>Log in</button>
-                        </Link>
-                        {/* <div className={cx('menu-profile')}>
-                            <p className={cx('menu-profile-name')}>Ho Bao</p><span><BiChevronDown className={cx('menu-profile-btn')} /></span>
-                        </div> */}
+                        {user ? <div className={cx('menu-profile')}>
+                            <p className={cx('menu-profile-name')}>Ho Bao</p>
+                            <BiChevronDown className={cx('menu-profile-btn')} />
+                            <div className={cx('menu-profile-drop')}>
+                                <ul>
+                                    <Link to='/profile' className={cx('router-item')}>
+                                        <li>
+                                            <AiOutlineUser className={cx('menu-profile-drop-icon')} />Tài khoản
+                                        </li>
+                                    </Link>
+                                    <li onClick={handleLogout}>
+                                        <HiOutlineLogout className={cx('menu-profile-drop-icon')} />Thoát
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                            : <Link to='/login'>
+                                <button className={cx('menu-btn-contact')}>Log in</button>
+                            </Link>
+                        }
                     </div>
                     <div className={cx('menu-contact-icon')}>
-                        <ul className={cx('menu-contact-icon-list')}>
-                            <li className={cx('menu-contact-icon-item')}><BsInstagram /></li>
-                            <li className={cx('menu-contact-icon-item')}><ImFacebook /></li>
-                            <li className={cx('menu-contact-icon-item')}><FaLinkedinIn /></li>
-                        </ul>
+                        {user ? <button className={cx('menu-btn-contact')}>Become a tasker</button>
+                            : <ul className={cx('menu-contact-icon-list')}>
+                                <li className={cx('menu-contact-icon-item')}><BsInstagram /></li>
+                                <li className={cx('menu-contact-icon-item')}><ImFacebook /></li>
+                                <li className={cx('menu-contact-icon-item')}><FaLinkedinIn /></li>
+                            </ul>
+                        }
                     </div>
                 </div>
             </div>

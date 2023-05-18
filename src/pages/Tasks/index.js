@@ -1,12 +1,35 @@
 import { BrowserRouter as Router, Link } from 'react-router-dom'
 import classNames from 'classnames/bind'
 import styles from './Tasks.module.scss'
-import { MdNavigateNext } from "react-icons/md";
-import images from '~/assets/images';
+import { MdNavigateNext } from "react-icons/md"
+import images from '~/assets/images'
+import { useEffect, useState } from 'react'
 
 const cx = classNames.bind(styles)
 
 function Tasks() {
+    const [listTasks, setListTasks] = useState([])
+    const [listServices, setListServices] = useState([])
+    const [taskOfService, setTaskOfService] = useState([])
+
+    useEffect(() => {
+        fetch(`http://localhost:3000/tasks`)
+            .then((res) => res.json())
+            .then((res) => {
+                setListTasks(res)
+            })
+
+        fetch(`http://localhost:3000/services`)
+            .then((res) => res.json())
+            .then((res) => {
+                setListServices(res)
+            })
+
+        const idTask = window.location.pathname.split('/')
+
+        setTaskOfService(idTask[2])
+    }, [])
+
     return (
         <>
             <div className={cx('tasks-wrapper')}>
@@ -17,111 +40,32 @@ function Tasks() {
             </div>
             <div className={cx('tasks')}>
                 <p className={cx('tasks-title')}>
-                    <Link className={cx('link-service-task')} to='/'><span className={cx('tasks-body-title')}>Home <MdNavigateNext /></span></Link>
-                    <Link className={cx('link-service-task')} to='/services'><span className={cx('tasks-body-title')}>Services <MdNavigateNext /></span></Link>
+                    <Link className={cx('link-service-task')} to='/'>
+                        <span className={cx('tasks-body-title')}>Home</span>
+                    </Link>
+                    <MdNavigateNext />
+                    <Link className={cx('link-service-task')} to='/services'>
+                        <span className={cx('tasks-body-title')}>Services</span>
+                    </Link>
+                    <MdNavigateNext />
                     <span className={cx('tasks-body-title')}>Tasks</span>
                 </p>
                 <div className={cx('tasks-body')}>
                     <div className={cx('tasks-content')}>
                         <ul className={cx('tasks-content-list')}>
-                            <li className={cx('tasks-content-item')}>
-                                <img className={cx('tasks-content-img')} src={images.background} alt='task' />
-                                <div className={cx('tasks-content-desc')}>
-                                    <h2>
-                                        <Link className={cx('link-service-task')} to='/tasker'>
-                                            Furniture Assembly
-                                        </Link>
-                                    </h2>
-                                    <p>Have a new desk or bookcase to put together? Taskers can assemble any of your furniture—quickly and efficiently.</p>
-                                    <Link className={cx('link-service-task')} to='/tasker'>
-                                        <button className={cx('tasks-content-btn')}>Book Now</button>
-                                    </Link>
-                                </div>
-                            </li>
-                            <li className={cx('tasks-content-item')}>
-                                <img className={cx('tasks-content-img')} src={images.background} alt='task' />
-                                <div className={cx('tasks-content-desc')}>
-                                    <h2>
-                                        <Link className={cx('link-service-task')} to='/tasker'>
-                                            Furniture Assembly
-                                        </Link>
-                                    </h2>
-                                    <p>Have a new desk or bookcase to put together? Taskers can assemble any of your furniture—quickly and efficiently.</p>
-                                    <Link className={cx('link-service-task')} to='/tasker'>
-                                        <button className={cx('tasks-content-btn')}>Book Now</button>
-                                    </Link>
-                                </div>
-                            </li>
-                            <li className={cx('tasks-content-item')}>
-                                <img className={cx('tasks-content-img')} src={images.background} alt='task' />
-                                <div className={cx('tasks-content-desc')}>
-                                    <h2>
-                                        <Link className={cx('link-service-task')} to='/tasker'>
-                                            Furniture Assembly
-                                        </Link>
-                                    </h2>
-                                    <p>Have a new desk or bookcase to put together? Taskers can assemble any of your furniture—quickly and efficiently.</p>
-                                    <Link className={cx('link-service-task')} to='/tasker'>
-                                        <button className={cx('tasks-content-btn')}>Book Now</button>
-                                    </Link>
-                                </div>
-                            </li>
-                            <li className={cx('tasks-content-item')}>
-                                <img className={cx('tasks-content-img')} src={images.background} alt='task' />
-                                <div className={cx('tasks-content-desc')}>
-                                    <h2>
-                                        <Link className={cx('link-service-task')} to='/tasker'>
-                                            Furniture Assembly
-                                        </Link>
-                                    </h2>
-                                    <p>Have a new desk or bookcase to put together? Taskers can assemble any of your furniture—quickly and efficiently.</p>
-                                    <Link className={cx('link-service-task')} to='/tasker'>
-                                        <button className={cx('tasks-content-btn')}>Book Now</button>
-                                    </Link>
-                                </div>
-                            </li>
-                            <li className={cx('tasks-content-item')}>
-                                <img className={cx('tasks-content-img')} src={images.background} alt='task' />
-                                <div className={cx('tasks-content-desc')}>
-                                    <h2>
-                                        <Link className={cx('link-service-task')} to='/tasker'>
-                                            Furniture Assembly
-                                        </Link>
-                                    </h2>
-                                    <p>Have a new desk or bookcase to put together? Taskers can assemble any of your furniture—quickly and efficiently.</p>
-                                    <Link className={cx('link-service-task')} to='/tasker'>
-                                        <button className={cx('tasks-content-btn')}>Book Now</button>
-                                    </Link>
-                                </div>
-                            </li>
-                            <li className={cx('tasks-content-item')}>
-                                <img className={cx('tasks-content-img')} src={images.background} alt='task' />
-                                <div className={cx('tasks-content-desc')}>
-                                    <h2>
-                                        <Link className={cx('link-service-task')} to='/tasker'>
-                                            Furniture Assembly
-                                        </Link>
-                                    </h2>
-                                    <p>Have a new desk or bookcase to put together? Taskers can assemble any of your furniture—quickly and efficiently.</p>
-                                    <Link className={cx('link-service-task')} to='/tasker'>
-                                        <button className={cx('tasks-content-btn')}>Book Now</button>
-                                    </Link>
-                                </div>
-                            </li>
-                            <li className={cx('tasks-content-item')}>
-                                <img className={cx('tasks-content-img')} src={images.background} alt='task' />
-                                <div className={cx('tasks-content-desc')}>
-                                    <h2>
-                                        <Link className={cx('link-service-task')} to='/tasker'>
-                                            Furniture Assembly
-                                        </Link>
-                                    </h2>
-                                    <p>Have a new desk or bookcase to put together? Taskers can assemble any of your furniture—quickly and efficiently.</p>
-                                    <Link className={cx('link-service-task')} to='/tasker'>
-                                        <button className={cx('tasks-content-btn')}>Book Now</button>
-                                    </Link>
-                                </div>
-                            </li>
+                            {listTasks.map(itemTaskOfService => (
+                                itemTaskOfService.servicesId == taskOfService ?
+                                    <li className={cx('tasks-content-item')} key={itemTaskOfService.id}>
+                                        <img className={cx('tasks-content-img')} src={images.background} alt='task' />
+                                        <div className={cx('tasks-content-desc')}>
+                                            <h2>{itemTaskOfService.name}</h2>
+                                            <p>{itemTaskOfService.desc}</p>
+                                            <Link className={cx('link-service-task')} to={`/tasker/${itemTaskOfService.id}`} >
+                                                <button className={cx('tasks-content-btn')}>Book Now</button>
+                                            </Link>
+                                        </div>
+                                    </li> : <></>
+                            ))}
                         </ul>
                     </div>
                     <div className={cx('tasks-step')}>
@@ -140,24 +84,13 @@ function Tasks() {
             <div className={cx('tasks-footer')}>
                 <h1 className={cx('tasks-footer-title')}>Choose other services</h1>
                 <ul className={cx('other-service-list')}>
-                    <li className={cx('other-service-item')}>
-                        Furniture Assembly
-                    </li>
-                    <li className={cx('other-service-item')}>
-                        Furniture Assembly
-                    </li>
-                    <li className={cx('other-service-item')}>
-                        Furniture Assembly
-                    </li>
-                    <li className={cx('other-service-item')}>
-                        Furniture Assembly
-                    </li>
-                    <li className={cx('other-service-item')}>
-                        Furniture Assembly
-                    </li>
-                    <li className={cx('other-service-item')}>
-                        Furniture Assembly
-                    </li>
+                    {listServices.map(listServices => (
+                        <li className={cx('other-service-item')}>
+                            <a href={`/tasks/${listServices.id}`}>
+                                {listServices.name}
+                            </a>
+                        </li>
+                    ))}
                 </ul>
             </div>
         </>

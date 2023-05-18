@@ -1,3 +1,8 @@
+.link {
+    text-decoration: none;
+    color: black;
+}
+
 .content {
     display: flex;
     flex-direction: column;
@@ -227,6 +232,32 @@
         font-weight: 700;
         color: black;
         margin-left: 5px;
+    }
+}
+
+.location-wrapper {
+    width: var(--default-width);
+    margin-bottom: 80px;
+
+    .location-title {
+        font-size: 2.4rem;
+        font-weight: 700;
+        margin: 20px 0;
+    }
+
+    .earth {
+        float: left;
+    }
+}
+
+.location-city {
+    display: flex;
+    flex-wrap: wrap;
+     
+    .location-city-item {
+        width: calc(100% / 4);
+        padding: 10px 20px;
+        text-align: center;
     }
 }
 

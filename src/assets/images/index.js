@@ -5,7 +5,9 @@ const images = {
     task2Desktop: require('~/assets/images/tasker2-desktop.jpg'),
     tasker: require('~/assets/images/tasker.jpg'),
     signUp: require('~/assets/images/client-sign-up-img.png'),
-    become: require('~/assets/images/become-a-tasker-img.png')
+    become: require('~/assets/images/become-a-tasker-img.png'),
+    fast: require('~/assets/images/super-fast-silver.png'),
+    earth: require('~/assets/images/earth.png')
 };
 
 export default images;

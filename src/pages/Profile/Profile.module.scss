@@ -30,9 +30,10 @@
     margin: 0 30px;
 }
 
-.profile-bar {
-    border-bottom: 1px solid var(--primary);
-    margin: 0 30px;
+.profile-bar,
+.profile-content {
+    margin: 0 30px;    
+    position: relative;
 
     h3 {
         font-size: 2.4rem;
@@ -44,13 +45,14 @@
         font-size: 2rem;
         font-weight: 500;
     }
-    
+
     ul {
         height: 50px;
         display: flex;
         align-items: center;
 
         li {
+            cursor: pointer;
             list-style: none;
             font-size: 2rem;
             font-weight: 600;
@@ -59,8 +61,71 @@
     }
 }
 
-.active {
+.profile-bar-line {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 4px;    
+    border-radius: 15px;
+    background-color: var(--btn-dark);
+    transition: all 0.2s ease;
+}
+
+.profile-bar .active {
     color: var(--text-dark);
+}
+
+//Tab Profile
+.block {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.label-info {
+    width: 124px;
+    font-weight: 500;
+}
+
+.input-info {
+    flex: 1;
+    width: 350px;
+    height: 35px;
+    outline: none;
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 0px 10px;
+}
+
+.btn-pro5 {
+    float: right;
+    cursor: pointer;
+    height: 43px;
+    background: var(--btn-dark);
+    outline: 0px;
+    border: 1px solid var(--btn-dark);
+    border-radius: 1000px;
+    box-shadow: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(255, 255, 255);
+    padding: 12px 24px;
+    margin: 0px;    
+    margin-top: 15px;
+
+    &:hover {
+        opacity: 0.88;
+    }
+}
+
+//Tab Hiring
+.profile-block {
+    display: none;
+}
+
+.profile-content .active {
+    display: block;
 }
 
 .hiried {
@@ -73,6 +138,22 @@
         height: 150px;
         border: 1px solid var(--primary);
         margin-right: 20px;
+    }
+
+    button {
+        cursor: pointer;
+        background-color: var(--btn-dark);
+        color: var(--text-color);
+        font-size: 1.6rem;
+        font-weight: 600;
+        padding: 10px 20px;
+        border: none;
+        outline: none;
+        margin-top: 5px;
+
+        &:hover {
+            opacity: 0.88;
+        }
     }
 }
 

@@ -25,9 +25,13 @@
         background-color: var(--text-dark);
     }
 
-    :first-child .hiring-process-step {
-        background-color: var(--text-dark);
-    }
+    // :first-child .hiring-process-step {
+    //     background-color: var(--text-dark);
+    // }
+}
+
+.hiring-process .active {
+    background-color: var(--text-dark);
 }
 
 .hiring-process {
@@ -99,9 +103,10 @@
 .hiring-conect {
     margin-top: calc(var(--default-header-height) + 50px);
     background-color: #f9fafb;
+    height: calc(100vh - var(--default-header-height) - 50px);
 }
 
-.hiring-mess {
+.hiring-start {
     width: var(--default-width);
     margin: 0 auto;
 
@@ -135,11 +140,17 @@
 .input-info {
     flex: 1;
     font-size: 1.8rem;
-    height: 45px;
+    // height: 45px;
     outline: none;
     border: 1px solid black;
     border-radius: 6px;
-    padding: 0px 10px;
+    padding: 10px 10px;
+}
+
+.btn-block {
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 40px 0;
 }
 
 .btn-hiring {
@@ -155,10 +166,110 @@
     color: rgb(255, 255, 255);
     padding: 12px 24px;
     display: block;
-    margin: 40px 0;
-    float: right;
 
     &:hover {
         opacity: 0.88;
     }
+}
+
+.hiring-mess {
+    width: var(--default-width);
+    margin: 0 auto;
+    display: flex;
+    background-color: var(--text-color);
+    height: calc(100vh - var(--default-header-height) - 50px);
+    border-left: 1px solid var(--primary);
+    border-right: 1px solid var(--primary);
+}
+
+.hiring-tasker {
+    width: 30%;
+    border-right: 1px solid var(--primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .hiring-tasker-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin: 20px 0;
+    }
+}
+
+.hiring-ib {
+    position: relative;
+    width: 70%;
+}
+
+.hiring-ib-content {
+    height: calc(100% - 35px - 20px);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.hiring-get-mess-wrap,
+.hiring-send-mess-wrap {
+    margin: 5px 10px;
+}
+
+.hiring-get-mess,
+.hiring-send-mess {
+    max-width: 45%;
+    font-weight: 600;
+    padding: 7px 15px;
+    border-radius: 20px;
+}
+
+.hiring-get-mess {
+    float: left;
+    background-color: var(--primary);
+}
+
+.hiring-send-mess {
+    float: right;
+    color: var(--text-color);
+    background-color: var(--btn-dark);
+
+}
+
+.hiring-ib-type {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    right: 0;
+
+    input {
+        flex: 1;
+        font-size: 1.6rem;
+        height: 35px;
+        outline: none;
+        border: 1px solid var(--primary-dark);
+        border-radius: 20px;
+        padding: 18px 18px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0 4px 12px -2px, rgba(0, 0, 0, 0.3) 0 2px 7px -3px;
+    }
+
+    .icon-send {
+        font-size: 2.2rem;
+        color: var(--text-dark);
+        margin: 0 15px;
+    }
+}
+
+.hiring-done {
+    width: var(--default-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--primary-dark);
+}
+
+.hiring-done-icon {
+    font-size: 10rem;
+    margin-top: 40px;
 }

@@ -1,5 +1,6 @@
-import { NoHeader } from '~/components/Layout'
+// import { NoHeader } from '~/components/Layout'
 import { NoFooter } from '~/components/Layout'
+import { JustContent } from '~/components/Layout'
 
 import Home from '~/pages/Home'
 import Services from '~/pages/Services'
@@ -20,11 +21,11 @@ const publicRoutes = [
         component: Services
     },
     {
-        path: '/tasks',
+        path: '/tasks/:id',
         component: Tasks
     },
     {
-        path: '/tasker',
+        path: '/tasker/:id',
         component: Tasker
     },
     {
@@ -44,7 +45,7 @@ const publicRoutes = [
     {
         path: '/hiring',
         component: Hiring,
-        layout: NoHeader
+        layout: JustContent
     }
 ]
 

@@ -50,12 +50,13 @@
     }
 }
 
-.left-login-btn-login {
+.left-login-body .active {
     background-color: var(--btn-dark);
     color: var(--text-color);
     border: 2px solid var(--btn-dark);
 }
 
+.left-login-btn-login,
 .left-login-btn-signup {
     background-color: transparent;
     color: var(--btn-dark);

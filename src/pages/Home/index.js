@@ -1,6 +1,8 @@
+import { BrowserRouter as Router, Link } from 'react-router-dom'
 import classNames from 'classnames/bind'
 import styles from './Home.module.scss'
 import images from '~/assets/images'
+import { useEffect, useState } from 'react'
 import { IoPricetagOutline } from "react-icons/io5"
 import { HiStar } from "react-icons/hi"
 import { Splide, SplideSlide } from '@splidejs/react-splide';
@@ -9,6 +11,16 @@ import '@splidejs/react-splide/css';
 const cx = classNames.bind(styles)
 
 function Home() {
+    const [listServices, setListServices] = useState([])
+
+    useEffect(() => {
+        fetch(`http://localhost:3000/services`)
+            .then((res) => res.json())
+            .then((res) => {
+                setListServices(res)
+            })
+    }, [])
+
     return (
         <div className={cx('content')}>
             <div className={cx('header-content')}>
@@ -22,62 +34,19 @@ function Home() {
                 <div className={cx('body-content')}>
                     <p className={cx('body-content-title')}>Popular services</p>
                     <ul className={cx('body-content-list')}>
-                        <li className={cx('body-content-item')}>
-                            <div className={cx('body-content-img')}>
-                                <img className={cx('body-content-item-img')} src={images.background} alt='service' />
-                            </div>
-                            <h2 className={cx('body-content-item-title')}>Dọn dẹp nhà</h2>
-                            <p className={cx('body-content-item-price')}><IoPricetagOutline /> Giá: 100.000đ - 200.000đ</p>
-                        </li>
-                        <li className={cx('body-content-item')}>
-                            <div className={cx('body-content-img')}>
-                                <img className={cx('body-content-item-img')} src={images.background} alt='service' />
-                            </div>
-                            <h2 className={cx('body-content-item-title')}>Bưng vác</h2>
-                            <p className={cx('body-content-item-price')}><IoPricetagOutline /> Giá: 150.000đ - 300.000đ</p>
-                        </li>
-                        <li className={cx('body-content-item')}>
-                            <div className={cx('body-content-img')}>
-                                <img className={cx('body-content-item-img')} src={images.background} alt='service' />
-                            </div>
-                            <h2 className={cx('body-content-item-title')}>Vận chuyển đồ đạc</h2>
-                            <p className={cx('body-content-item-price')}><IoPricetagOutline /> Giá: 100.000đ - 200.000đ</p>
-                        </li>
-                        <li className={cx('body-content-item')}>
-                            <div className={cx('body-content-img')}>
-                                <img className={cx('body-content-item-img')} src={images.background} alt='service' />
-                            </div>
-                            <h2 className={cx('body-content-item-title')}>Dọn dẹp vườn</h2>
-                            <p className={cx('body-content-item-price')}><IoPricetagOutline /> Giá: 100.000đ - 200.000đ</p>
-                        </li>
-                        <li className={cx('body-content-item')}>
-                            <div className={cx('body-content-img')}>
-                                <img className={cx('body-content-item-img')} src={images.background} alt='service' />
-                            </div>
-                            <h2 className={cx('body-content-item-title')}>Sửa điện</h2>
-                            <p className={cx('body-content-item-price')}><IoPricetagOutline /> Giá: 100.000đ - 200.000đ</p>
-                        </li>
-                        <li className={cx('body-content-item')}>
-                            <div className={cx('body-content-img')}>
-                                <img className={cx('body-content-item-img')} src={images.background} alt='service' />
-                            </div>
-                            <h2 className={cx('body-content-item-title')}>Lắp ráp đồ đạc</h2>
-                            <p className={cx('body-content-item-price')}><IoPricetagOutline /> Giá: 100.000đ - 200.000đ</p>
-                        </li>
-                        <li className={cx('body-content-item')}>
-                            <div className={cx('body-content-img')}>
-                                <img className={cx('body-content-item-img')} src={images.background} alt='service' />
-                            </div>
-                            <h2 className={cx('body-content-item-title')}>Giặt ủi</h2>
-                            <p className={cx('body-content-item-price')}><IoPricetagOutline /> Giá: 50.000đ - 150.000đ</p>
-                        </li>
-                        <li className={cx('body-content-item')}>
-                            <div className={cx('body-content-img')}>
-                                <img className={cx('body-content-item-img')} src={images.background} alt='service' />
-                            </div>
-                            <h2 className={cx('body-content-item-title')}>Tỉa cây</h2>
-                            <p className={cx('body-content-item-price')}><IoPricetagOutline /> Giá: 100.000đ - 200.00đ</p>
-                        </li>
+                        {listServices.map(itemServices => (
+                            <li className={cx('body-content-item')} key={itemServices.id}>
+                                <div className={cx('body-content-img')}>
+                                    <Link to={`/tasks/${itemServices.id}`} >
+                                        <img className={cx('body-content-item-img')} src={images.background} alt='service' />
+                                    </Link>
+                                </div>
+                                <Link to={`/tasks/${itemServices.id}`} className={cx('link')} >
+                                    <h2 className={cx('body-content-item-title')}>{itemServices.name}</h2>
+                                </Link>
+                                <p className={cx('body-content-item-price')}><IoPricetagOutline /> Giá: 100.000đ - 200.000đ</p>
+                            </li>
+                        ))}
                     </ul>
                 </div>
                 <div className={cx('body-bridge-wrapper')}>
@@ -211,13 +180,67 @@ function Home() {
                         <img className={cx('bridge-img')} src={images.task2Desktop} alt='Task2 Desktop' />
                     </div>
                 </div>
+                <div className={cx('location-wrapper')}>
+                    <p className={cx('location-title')}>Cities where we work - tasksilver</p>
+                    <img className={cx('earth')} src={images.earth} alt='earth' />
+                    <div className={cx('location-city')}>
+                        <div className={cx('location-city-item')}>
+                            <h3>Da Nang</h3>
+                            <p>Ngu Hanh Son</p>
+                            <p>Lien Chieu</p>
+                            <p>Son Tra</p>
+                        </div>
+                        <div className={cx('location-city-item')}>
+                            <h3>Da Nang</h3>
+                            <p>Ngu Hanh Son</p>
+                            <p>Lien Chieu</p>
+                            <p>Son Tra</p>
+                        </div>
+                        <div className={cx('location-city-item')}>
+                            <h3>Da Nang</h3>
+                            <p>Ngu Hanh Son</p>
+                            <p>Lien Chieu</p>
+                            <p>Son Tra</p>
+                        </div>
+                        <div className={cx('location-city-item')}>
+                            <h3>Da Nang</h3>
+                            <p>Ngu Hanh Son</p>
+                            <p>Lien Chieu</p>
+                            <p>Son Tra</p>
+                        </div>
+                        <div className={cx('location-city-item')}>
+                            <h3>Da Nang</h3>
+                            <p>Ngu Hanh Son</p>
+                            <p>Lien Chieu</p>
+                            <p>Son Tra</p>
+                        </div>
+                        <div className={cx('location-city-item')}>
+                            <h3>Da Nang</h3>
+                            <p>Ngu Hanh Son</p>
+                            <p>Lien Chieu</p>
+                            <p>Son Tra</p>
+                        </div>
+                        <div className={cx('location-city-item')}>
+                            <h3>Da Nang</h3>
+                            <p>Ngu Hanh Son</p>
+                            <p>Lien Chieu</p>
+                            <p>Son Tra</p>
+                        </div>
+                        <div className={cx('location-city-item')}>
+                            <h3>Da Nang</h3>
+                            <p>Ngu Hanh Son</p>
+                            <p>Lien Chieu</p>
+                            <p>Son Tra</p>
+                        </div>
+                    </div>
+                </div>
                 <div className={cx('end-page-wrapper')}>
                     <h1>Ready to get started?</h1>
                     <div className={cx('end-page-body')}>
                         <div className={cx('end-con')}>
                             <img className={cx('end-img')} src={images.signUp} alt='Sign-Up png' />
                             <p>Hear that? The sweet sigh of relief. Start getting more done.</p>
-                            <button>Sign up</button>
+                            <Link to={`/login`} ><button>Sign up</button></Link>
                         </div>
                         <div className={cx('end-con')}>
                             <img className={cx('end-img')} src={images.become} alt='Sign-Up png' />
