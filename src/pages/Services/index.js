@@ -11,12 +11,12 @@ function Services() {
     const [listTasks, setListTasks] = useState([])
 
     useEffect(() => {
-        fetch(`http://localhost:3000/services`)
+        fetch(`http://localhost:8000/service`)
             .then((res) => res.json())
             .then((res) => {
                 setListServices(res)
             })
-        fetch(`http://localhost:3000/tasks`)
+        fetch(`http://localhost:8000/task`)
             .then((res) => res.json())
             .then((res) => {
                 setListTasks(res)
@@ -27,31 +27,33 @@ function Services() {
         <>
             <div className={cx('service-wrapper')}>
                 <div className={cx('service-content')}>
-                    <p className={cx('service-content-title')}>Your to-do list is on us.</p>
+                    <p className={cx('service-content-title')}>Danh sách việc cần làm của bạn là của chúng tôi.</p>
                 </div>
                 <div className={cx('service')}>
-                    <p className={cx('service-body-title')}>All services</p>
+                    <p className={cx('service-body-title')}>Tất cả dịch vụ</p>
                 </div>
             </div>
             <div className={cx('service-body')}>
                 <ul className={cx('service-body-list')}>
-                    {listServices.map(itemServices => (
-                        <li className={cx('service-body-item')} key={itemServices.id}>
+                    {listServices.map(itemService => (
+                        <li className={cx('service-body-item')} key={itemService.id}>
                             <div className={cx('service-body-img')}>
-                                <Link to={`/tasks/${itemServices.id}`} >
+                                <Link to={`/tasks/${itemService.id}`} >
                                     <img className={cx('service-body-item-img')} src={images.background} alt='service' />
                                 </Link>
                             </div>
                             <div className={cx('service-body-task')}>
-                                <Link to={`/tasks/${itemServices.id}`} className={cx('link-service-task')}>
-                                    <h2 className={cx('service-body-task-title')}>{itemServices.name}</h2>
+                                <Link to={`/tasks/${itemService.id}`} className={cx('link-service-task')}>
+                                    <h2 className={cx('service-body-task-title')}>{itemService.name}</h2>
                                 </Link>
-                                <h3 className={cx('service-body-task-decs')}>{itemServices.desc}</h3>
+                                <h3 className={cx('service-body-task-decs')}>{itemService.description}</h3>
                                 <ul className={cx('service-body-task-list')}>
-                                    {listTasks.map(itemTasks => (
-                                        itemTasks.servicesId === itemServices.id
-                                            ? <Link to={`/tasker/${itemTasks.id}`} className={cx('link-service-task')}>
-                                                <li className={cx('service-body-task-item')} key={itemTasks.id}>{itemTasks.name}</li>
+                                    {listTasks.map(itemTask => (
+                                        itemTask.serviceId === itemService.id
+                                            ? <Link to={`/tasker/${itemTask.id}`} className={cx('link-service-task')}>
+                                                <li className={cx('service-body-task-item')}>
+                                                    {itemTask.name}
+                                                </li>
                                             </Link>
                                             : <></>
                                     ))}

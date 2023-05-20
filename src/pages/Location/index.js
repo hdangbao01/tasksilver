@@ -22,10 +22,10 @@ function Location() {
         <div className={cx('location-wrapper')}>
             <div className={cx('location-content')}>
                 <div className={cx('location-search')}>
-                    <p className={cx('location-search-title')}>Find location <br /> where we work?</p>
+                    <p className={cx('location-search-title')}>Tìm kiếm địa điểm <br /> chúng tôi làm việc?</p>
                     <div className={cx('location-search-body')}>
-                        <input className={cx('location-search-input')} placeholder='Search by zip code...' />
-                        <button className={cx('location-search-btn')}>Check Availability</button>
+                        <input className={cx('location-search-input')} placeholder='Nhập địa điểm của bạn...' />
+                        <button className={cx('location-search-btn')}>Tìm kiếm</button>
                     </div>
                 </div>
                 <div className={cx('location-maps')}>

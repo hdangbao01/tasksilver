@@ -18,12 +18,12 @@ function Footer() {
                 </div>
                 <div className={cx('footer-logo')}>
                     <ul className={cx('footer-contact-list')}>
-                        <li className={cx('footer-contact-item')}>Home</li>
-                        <li className={cx('footer-contact-item')}>Services</li>
-                        <li className={cx('footer-contact-item')}>Location</li>
-                        <li className={cx('footer-contact-item')}>Contact</li>
-                        <li className={cx('footer-contact-item')}>About</li>
-                        <li className={cx('footer-contact-item')}>Log in</li>
+                        <li className={cx('footer-contact-item')}>Trang chủ</li>
+                        <li className={cx('footer-contact-item')}>Dịch vụ</li>
+                        <li className={cx('footer-contact-item')}>Địa điểm</li>
+                        <li className={cx('footer-contact-item')}>Thông tin</li>
+                        <li className={cx('footer-contact-item')}>Kết nối</li>
+                        <li className={cx('footer-contact-item')}>Đăng ký</li>
                     </ul>
                 </div>
                 <div className={cx('footer-logo')}>

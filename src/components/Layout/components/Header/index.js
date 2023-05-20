@@ -14,6 +14,7 @@ const cx = classNames.bind(styles)
 
 function Header() {
     const user = localStorage.getItem("user")
+    const [index, setIndex] = useState(window.location.pathname.split('/')[1])
     const [offset, setOffset] = useState(0)
     const [isMenu, setIsMenu] = useState(false)
 
@@ -46,13 +47,19 @@ function Header() {
                 <div className={cx('menu-nav')}>
                     <ul className={cx('menu-list')}>
                         <Link to='/' className={cx('router-item')}>
-                            <li className={cx('menu-item', 'active')}>Home</li>
+                            <li className={cx('menu-item', `${index === '' ? 'active' : null}`)} onClick={() => { setIndex('') }}>
+                                Trang chủ
+                            </li>
                         </Link>
                         <Link to='/services' className={cx('router-item')}>
-                            <li className={cx('menu-item')}>Services</li>
+                            <li className={cx('menu-item', `${index === 'services' ? 'active' : null}`)} onClick={() => { setIndex('services') }}>
+                                Dịch vụ
+                            </li>
                         </Link>
                         <Link to='/location' className={cx('router-item')}>
-                            <li className={cx('menu-item')}>Location</li>
+                            <li className={cx('menu-item', `${index === "location" ? 'active' : null}`)} onClick={() => { setIndex("location") }}>
+                                Địa điểm
+                            </li>
                         </Link>
                     </ul>
                 </div>
@@ -64,7 +71,7 @@ function Header() {
                 <div className={cx('menu-contact')}>
                     <div>
                         {user ? <div className={cx('menu-profile')}>
-                            <p className={cx('menu-profile-name')}>Ho Bao</p>
+                            <p className={cx('menu-profile-name')}>{user}</p>
                             <BiChevronDown className={cx('menu-profile-btn')} />
                             <div className={cx('menu-profile-drop')}>
                                 <ul>
@@ -80,12 +87,12 @@ function Header() {
                             </div>
                         </div>
                             : <Link to='/login'>
-                                <button className={cx('menu-btn-contact')}>Log in</button>
+                                <button className={cx('menu-btn-contact')}>Đăng nhập</button>
                             </Link>
                         }
                     </div>
                     <div className={cx('menu-contact-icon')}>
-                        {user ? <button className={cx('menu-btn-contact')}>Become a tasker</button>
+                        {user ? <button className={cx('menu-btn-contact')}>Nhận công việc</button>
                             : <ul className={cx('menu-contact-icon-list')}>
                                 <li className={cx('menu-contact-icon-item')}><BsInstagram /></li>
                                 <li className={cx('menu-contact-icon-item')}><ImFacebook /></li>
@@ -95,7 +102,7 @@ function Header() {
                     </div>
                 </div>
             </div>
-        </header>
+        </header >
     )
 }
 

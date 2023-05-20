@@ -1,29 +1,103 @@
 import classNames from 'classnames/bind'
 import styles from './Profile.module.scss'
 import images from '~/assets/images'
-import { useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const cx = classNames.bind(styles)
 
 function Profile() {
+    const user = localStorage.getItem("user")
+    const [index, setIndex] = useState(0)
+    const [upImg, setUpImg] = useState('')
+    const [viewImg, setViewImg] = useState('')
+
+    const refImg = useRef('')
+    const viwImg = useRef('')
+    const tabBar0 = useRef()
+    const tabBar1 = useRef()
+    const tabBar2 = useRef()
+    const tabLine = useRef()
+
+    useEffect(() => {
+        if (index === 0) {
+            tabLine.current.style.left = tabBar0.current.offsetLeft + "px"
+            tabLine.current.style.width = tabBar0.current.offsetWidth + "px"
+        } else if (index === 1) {
+            tabLine.current.style.left = tabBar1.current.offsetLeft + "px"
+            tabLine.current.style.width = tabBar1.current.offsetWidth + "px"
+        } else if (index === 2) {
+            tabLine.current.style.left = tabBar2.current.offsetLeft + "px"
+            tabLine.current.style.width = tabBar2.current.offsetWidth + "px"
+        }
+    }, [index])
+
+    useEffect(() => {
+        if (upImg) {
+            const formData = new FormData()
+
+            formData.append("file", upImg)
+
+            const options = {
+                method: 'POST',
+                body: formData,
+            }
+
+            fetch(`http://127.0.0.1:8000/service/savefile`, options)
+                .then((res) => res.json())
+                .then((res) => {
+                    alert('thanh cong')
+                })
+                .catch((res) => {
+                    alert('thai bai');
+                })
+
+            console.log(formData);
+        }
+    }, [upImg])
+
+    useEffect(() => {
+        if (!user) {
+            window.location.href = '/'
+        }
+    }, [])
+
+    const handleUpImage = () => {
+        setUpImg(refImg.current.files[0])
+    }
+
+    const priviewImg = () => {
+        setViewImg(URL.createObjectURL(refImg.current.files[0]))
+    }
+
     return (
         <div className={cx('profile-wrapper')}>
-            <div className={cx('profile-first')}>
+            {user ? <div className={cx('profile-first')}>
                 <div className={cx('profile-main')}>
                     <div className={cx('profile-header')}>
-                        <img className={cx('profile-avatar')} src={images.background} alt='avatarUser' />
-                        <h1>Ho Bao</h1>
+                        <img ref={viwImg} className={cx('profile-avatar')}
+                            src={viewImg ? viewImg : images.background}
+                            alt='avatarUser' />
+                        <div>
+                            <h1>Ho Bao</h1>
+                            <input ref={refImg} className={cx('file-img')} type='file' onChange={(e) => priviewImg()} />
+                        </div>
                     </div>
                     <div className={cx('profile-bar')}>
                         <ul>
-                            <li>Tổng quan</li>
-                            <li className={cx('active')}>Thông tin cá nhân</li>
-                            <li>Thuê</li>
+                            <li ref={tabBar0} className={cx(`${index === 0 ? 'active' : null}`)} onClick={() => { setIndex(0) }}>
+                                Tổng quan
+                            </li>
+                            <li ref={tabBar1} className={cx(`${index === 1 ? 'active' : null}`)} onClick={() => { setIndex(1) }}>
+                                Thông tin cá nhân
+                            </li>
+                            <li ref={tabBar2} className={cx(`${index === 2 ? 'active' : null}`)} onClick={() => { setIndex(2) }}>
+                                Thuê
+                            </li>
                         </ul>
-                        <div className={cx('profile-bar-line')}></div>
+                        <div ref={tabLine} className={cx('profile-bar-line')}></div>
                     </div>
                     <div className={cx('profile-content')}>
-                        <div className={cx('profile-block', 'active')}>
+                        <div className={cx('profile-block', `${index === 1 ? 'active' : null}`)}>
                             <div className={cx('content-pro5')} >
                                 <div className={cx('mana')}>
                                     <div className={cx('contact-info')}>
@@ -56,11 +130,13 @@ function Profile() {
                                             <input className={cx('input-info')} />
                                         </div>
                                     </div>
-                                    <button className={cx('btn-pro5')}>Lưu</button>
+                                    <button className={cx('btn-pro5')}
+                                        onClick={handleUpImage}
+                                    >Lưu</button>
                                 </div>
                             </div>
                         </div>
-                        <div className={cx('profile-block')}>
+                        <div className={cx('profile-block', `${index === 2 ? 'active' : null}`)}>
                             <h3>Đang thuê</h3>
                             <div className={cx('hiried')}>
                                 <img src={images.tasker} alt='avatar' />
@@ -100,6 +176,8 @@ function Profile() {
                     </div>
                 </div>
             </div>
+                : <></>
+            }
         </div>
     )
 }

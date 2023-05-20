@@ -14,7 +14,7 @@ function Home() {
     const [listServices, setListServices] = useState([])
 
     useEffect(() => {
-        fetch(`http://localhost:3000/services`)
+        fetch(`http://localhost:8000/service`)
             .then((res) => res.json())
             .then((res) => {
                 setListServices(res)
@@ -24,15 +24,15 @@ function Home() {
     return (
         <div className={cx('content')}>
             <div className={cx('header-content')}>
-                <p className={cx('header-content-title')}>How can we help?</p>
+                <p className={cx('header-content-title')}>Chúng tôi có thể giúp gì cho bạn?</p>
                 <div className={cx('header-content-body')}>
-                    <input className={cx('header-content-input')} placeholder='Enter task for help...' />
-                    <button className={cx('header-content-btn')}>Get help today</button>
+                    <input className={cx('header-content-input')} placeholder='Nhập công việc...' />
+                    <button className={cx('header-content-btn')}>Nhận giúp đỡ ngay</button>
                 </div>
             </div>
             <div className={cx('body-content-wrapper')}>
                 <div className={cx('body-content')}>
-                    <p className={cx('body-content-title')}>Popular services</p>
+                    <p className={cx('body-content-title')}>Dịch vụ phổ biến</p>
                     <ul className={cx('body-content-list')}>
                         {listServices.map(itemServices => (
                             <li className={cx('body-content-item')} key={itemServices.id}>
@@ -64,7 +64,7 @@ function Home() {
                     </div>
                 </div>
                 <div className={cx('body-content')}>
-                    <p className={cx('body-content-title')}>Featured Taskers</p>
+                    <p className={cx('body-content-title')}>Người giúp việc nổi bậc</p>
                     <div className={cx('slide-taskers')}>
                         <Splide
                             options={{
@@ -181,7 +181,7 @@ function Home() {
                     </div>
                 </div>
                 <div className={cx('location-wrapper')}>
-                    <p className={cx('location-title')}>Cities where we work - tasksilver</p>
+                    <p className={cx('location-title')}>Địa điểm chúng tôi làm việc - tasksilver</p>
                     <img className={cx('earth')} src={images.earth} alt='earth' />
                     <div className={cx('location-city')}>
                         <div className={cx('location-city-item')}>
@@ -235,17 +235,17 @@ function Home() {
                     </div>
                 </div>
                 <div className={cx('end-page-wrapper')}>
-                    <h1>Ready to get started?</h1>
+                    <h1>Bắt đầu ngay?</h1>
                     <div className={cx('end-page-body')}>
                         <div className={cx('end-con')}>
                             <img className={cx('end-img')} src={images.signUp} alt='Sign-Up png' />
-                            <p>Hear that? The sweet sigh of relief. Start getting more done.</p>
-                            <Link to={`/login`} ><button>Sign up</button></Link>
+                            <p>Bạn muốn cuộc sống nhẹ nhàng hơn. Đăng ký để thuê người giúp việc.</p>
+                            <Link to={`/login`} ><button>Đăng ký ngay</button></Link>
                         </div>
                         <div className={cx('end-con')}>
                             <img className={cx('end-img')} src={images.become} alt='Sign-Up png' />
-                            <p>Grow your own business while saving the day for busy neighbors.</p>
-                            <button>Become a tasker</button>
+                            <p>Đăng ký công việc của riêng bạn để trở thành người giúp việc của chúng tôi.</p>
+                            <button>Nhận công việc</button>
                         </div>
                     </div>
                 </div>

@@ -14,7 +14,7 @@ function Tasker() {
     const [taskerOfTask, setTaskerOfTask] = useState([])
 
     useEffect(() => {
-        fetch(`http://localhost:3000/users`)
+        fetch(`http://localhost:8000/user`)
             .then((res) => res.json())
             .then((res) => {
                 setListTaskers(res)
@@ -32,8 +32,8 @@ function Tasker() {
                     <div className={cx('tasks-content')}>
                         <ul className={cx('tasks-content-list')}>
                             {listTaskers.map(itemTaskerOfTasks => (
-                                itemTaskerOfTasks.tasksId == taskerOfTask ?
-                                    <li className={cx('tasks-content-item')}>
+                                itemTaskerOfTasks.taskId == taskerOfTask ?
+                                    <li className={cx('tasks-content-item')} key={itemTaskerOfTasks.id}>
                                         <div className={cx('tasker-info')}>
                                             <img className={cx('tasks-content-img')} src={images.background} alt='task' />
                                             <p>50.000đ/h</p>
@@ -49,7 +49,7 @@ function Tasker() {
                                             <p><span><BiCheckShield /></span>Kỹ năng: Thành thạo Tiếng Anh</p>
                                             <p><span><BiCheckCircle /></span>Đã hoàn thành: 200 công việc</p>
                                             <h3>Giới thiệu:</h3>
-                                            <p>Tôi là người giúp việc đáng tin cậy</p>
+                                            <p>{itemTaskerOfTasks.description}</p>
                                         </div>
                                     </li> : <></>
                             ))}
