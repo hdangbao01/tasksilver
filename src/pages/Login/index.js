@@ -8,6 +8,7 @@ function Login() {
     const user = localStorage.getItem("user")
     const [switchLoginForm, setSwitchLoginForm] = useState(true)
     const [listAccount, setListAccount] = useState(true)
+    const [listUser, setListUser] = useState('')
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -21,7 +22,14 @@ function Login() {
     const [city, setCity] = useState('')
 
     const [userSignUp, setUserSignUp] = useState('')
-    const [accSignUp, setAccSignUp] = useState('')
+
+    const getListUser = () => {
+        fetch(`http://localhost:8000/user`)
+            .then((res) => res.json())
+            .then((res) => {
+                setListUser(res)
+            })
+    }
 
     useEffect(() => {
         fetch(`http://localhost:8000/account`)
@@ -44,35 +52,40 @@ function Login() {
             body: JSON.stringify(userSignUp)
         }
 
-        const optionsAcc = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(accSignUp)
-        }
-
-        if (accSignUp) {
+        if (userSignUp) {
             fetch(`http://localhost:8000/user`, optionsUser)
                 .then((res) => res.json())
                 .then((res) => {
-                    fetch(`http://localhost:8000/account`, optionsAcc)
-                        .then((res) => res.json())
-                        .then((res) => {
-                            alert("Đăng ký thành công!")
-                            window.location.reload()
-                        })
-                        .catch((res) => {
-                            alert("Đăng ký thất bại, vui lòng thử lại!")
-                        })
+                    getListUser()
+                    alert("Đăng ký thành công!")
                 })
                 .catch((res) => {
                     alert("Đăng ký thất bại, vui lòng thử lại!")
                 })
-
-
         }
-    }, [accSignUp])
+    }, [userSignUp])
+
+    useEffect(() => {
+        if (userSignUp) {
+            const idSignUp = listUser.slice(-1)[0].id
+            const optionsAcc = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: email,
+                    password: pass,
+                    userId: idSignUp
+                })
+            }
+            fetch(`http://localhost:8000/account`, optionsAcc)
+                .then((res) => res.json())
+                .then((res) => {
+                    window.location.reload()
+                })
+        }
+    }, [listUser])
 
     const switchLogin = () => {
         setSwitchLoginForm(true)
@@ -82,12 +95,15 @@ function Login() {
         setSwitchLoginForm(false)
     }
     const handleLogin = () => {
-        listAccount.find(itemAccount => {
-            if (itemAccount.username === username && itemAccount.password === password) {
-                window.location.href = '/'
-                localStorage.setItem("user", itemAccount.username);
-            }
-        })
+        const findAcc = listAccount.find(itemAccount => (
+            itemAccount.username === username && itemAccount.password === password
+        ))
+        if (findAcc) {
+            window.location.href = '/'
+            localStorage.setItem("user", findAcc.username);
+        } else {
+            alert("Thông tin đăng nhập không chính xác!")
+        }
     }
     const handleSignup = () => {
         setUserSignUp({
@@ -101,11 +117,6 @@ function Login() {
             description: null,
             taskId: null,
             image: null
-        })
-        setAccSignUp({
-            username: email,
-            password: pass,
-            userId: 10
         })
     }
 
@@ -153,7 +164,7 @@ function Login() {
                                     value={email} onChange={e => setEmail(e.target.value)}
                                 />
                                 <label className={cx('right-login-label')}>Mật khẩu</label>
-                                <input className={cx('right-login-input')} placeholder='Nhập mật khẩu...'
+                                <input className={cx('right-login-input')} placeholder='Nhập mật khẩu...' type='password'
                                     value={pass} onChange={e => setPass(e.target.value)}
                                 />
                                 <label className={cx('right-login-label')}>Điện thoại</label>

@@ -10,11 +10,17 @@ import Tasks from '~/pages/Tasks'
 import Tasker from '~/pages/Tasker'
 import Hiring from '~/pages/Hiring'
 import Profile from '~/pages/Profile'
+import Register from '~/pages/Register'
 
 const publicRoutes = [
     {
         path: '/',
         component: Home
+    },
+    {
+        path: '/register',
+        component: Register,
+        layout: JustContent
     },
     {
         path: '/services',

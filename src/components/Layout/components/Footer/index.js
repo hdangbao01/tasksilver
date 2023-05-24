@@ -20,7 +20,7 @@ function Footer() {
                     <ul className={cx('footer-contact-list')}>
                         <li className={cx('footer-contact-item')}>Trang chủ</li>
                         <li className={cx('footer-contact-item')}>Dịch vụ</li>
-                        <li className={cx('footer-contact-item')}>Địa điểm</li>
+                        <li className={cx('footer-contact-item')}>Vị trí</li>
                         <li className={cx('footer-contact-item')}>Thông tin</li>
                         <li className={cx('footer-contact-item')}>Kết nối</li>
                         <li className={cx('footer-contact-item')}>Đăng ký</li>

@@ -66,6 +66,21 @@
     }
 }
 
+.availbe,
+.not-availbe {
+    padding: 15px 25px;
+}
+
+.availbe {
+    color: green;
+    font-weight: 600;
+}
+
+.not-availbe {
+    color: red;
+    font-weight: 600;
+}
+
 .location-maps {
     width: 100%;
     height: 100%;

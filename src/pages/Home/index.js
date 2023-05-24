@@ -3,7 +3,7 @@ import classNames from 'classnames/bind'
 import styles from './Home.module.scss'
 import images from '~/assets/images'
 import { useEffect, useState } from 'react'
-import { IoPricetagOutline } from "react-icons/io5"
+import { BiInfoCircle } from "react-icons/bi"
 import { HiStar } from "react-icons/hi"
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
@@ -12,6 +12,33 @@ const cx = classNames.bind(styles)
 
 function Home() {
     const [listServices, setListServices] = useState([])
+    const [listTasks, setListTasks] = useState([])
+    const [search, setSearch] = useState('')
+    const [checkSVAvailbe, setCheckSVAvailbe] = useState(true)
+    const [checkTAvailbe, setCheckTAvailbe] = useState(true)
+
+    function removeVietnameseTones(str) {
+        str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+        str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+        str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+        str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+        str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+        str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+        str = str.replace(/đ/g, "d");
+        str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
+        str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+        str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+        str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
+        str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
+        str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
+        str = str.replace(/Đ/g, "D");
+        str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, "");
+        str = str.replace(/\u02C6|\u0306|\u031B/g, "");
+        str = str.replace(/ + /g, " ");
+        str = str.trim();
+        str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, " ");
+        return str;
+    }
 
     useEffect(() => {
         fetch(`http://localhost:8000/service`)
@@ -19,16 +46,48 @@ function Home() {
             .then((res) => {
                 setListServices(res)
             })
+
+        fetch(`http://localhost:8000/task`)
+            .then((res) => res.json())
+            .then((res) => {
+                setListTasks(res)
+            })
     }, [])
+
+    const handleSearch = () => {
+        setCheckSVAvailbe(listServices.some(service => (
+            removeVietnameseTones(service.name).toLowerCase().includes(removeVietnameseTones(search.toLowerCase()))
+        )))
+        setCheckTAvailbe(listTasks.some(task => (
+            removeVietnameseTones(task.name).toLowerCase().includes(removeVietnameseTones(search.toLowerCase()))
+        )))
+
+        const resultSV = listServices.find(service => (
+            removeVietnameseTones(service.name).toLowerCase().includes(removeVietnameseTones(search.toLowerCase()))
+        ))
+
+        const resultT = listTasks.find(task => (
+            removeVietnameseTones(task.name).toLowerCase().includes(removeVietnameseTones(search.toLowerCase()))
+        ))
+
+        if (resultSV) {
+            window.location.href = `/tasks/${resultSV.id}`
+        } else if (resultT) {
+            window.location.href = `/tasks/${resultT.serviceId}`
+        }
+    }
 
     return (
         <div className={cx('content')}>
             <div className={cx('header-content')}>
                 <p className={cx('header-content-title')}>Chúng tôi có thể giúp gì cho bạn?</p>
                 <div className={cx('header-content-body')}>
-                    <input className={cx('header-content-input')} placeholder='Nhập công việc...' />
-                    <button className={cx('header-content-btn')}>Nhận giúp đỡ ngay</button>
+                    <input className={cx('header-content-input')} placeholder='Nhập công việc...'
+                        value={search} onChange={e => setSearch(e.target.value)}
+                    />
+                    <button className={cx('header-content-btn')} onClick={handleSearch}>Nhận giúp đỡ ngay</button>
                 </div>
+                {!checkSVAvailbe && !checkTAvailbe && <p className={cx('result-search')}>Không có công việc bạn muốn tìm!</p>}
             </div>
             <div className={cx('body-content-wrapper')}>
                 <div className={cx('body-content')}>
@@ -38,13 +97,13 @@ function Home() {
                             <li className={cx('body-content-item')} key={itemServices.id}>
                                 <div className={cx('body-content-img')}>
                                     <Link to={`/tasks/${itemServices.id}`} >
-                                        <img className={cx('body-content-item-img')} src={images.background} alt='service' />
+                                        <img className={cx('body-content-item-img')} src={require(`../../api-tasksilver/Photos/${itemServices?.image}`)} alt='service' />
                                     </Link>
                                 </div>
                                 <Link to={`/tasks/${itemServices.id}`} className={cx('link')} >
                                     <h2 className={cx('body-content-item-title')}>{itemServices.name}</h2>
                                 </Link>
-                                <p className={cx('body-content-item-price')}><IoPricetagOutline /> Giá: 100.000đ - 200.000đ</p>
+                                <p className={cx('body-content-item-price')}><BiInfoCircle /> Xem các công việc</p>
                             </li>
                         ))}
                     </ul>
@@ -184,6 +243,14 @@ function Home() {
                     <p className={cx('location-title')}>Địa điểm chúng tôi làm việc - tasksilver</p>
                     <img className={cx('earth')} src={images.earth} alt='earth' />
                     <div className={cx('location-city')}>
+                        {/* {listUser.map(itemUser => (
+                            <div className={cx('location-city-item')}>
+                                <h3>{itemUser.address}</h3>
+                                <p>Ngu Hanh Son</p>
+                                <p>Lien Chieu</p>
+                                <p>Son Tra</p>
+                            </div>
+                        ))} */}
                         <div className={cx('location-city-item')}>
                             <h3>Da Nang</h3>
                             <p>Ngu Hanh Son</p>
@@ -245,7 +312,7 @@ function Home() {
                         <div className={cx('end-con')}>
                             <img className={cx('end-img')} src={images.become} alt='Sign-Up png' />
                             <p>Đăng ký công việc của riêng bạn để trở thành người giúp việc của chúng tôi.</p>
-                            <button>Nhận công việc</button>
+                            <Link to={`/register`} ><button>Nhận công việc</button></Link>
                         </div>
                     </div>
                 </div>

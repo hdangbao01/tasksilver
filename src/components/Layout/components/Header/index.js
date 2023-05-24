@@ -2,7 +2,8 @@ import classNames from 'classnames/bind'
 import styles from './Header.module.scss'
 import images from '~/assets/images'
 import { BrowserRouter as Router, Link } from 'react-router-dom'
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { UserContext } from '~/App';
 import { BsInstagram } from "react-icons/bs";
 import { ImFacebook } from "react-icons/im";
 import { FaLinkedinIn } from "react-icons/fa";
@@ -13,7 +14,10 @@ import { HiOutlineLogout } from "react-icons/hi";
 const cx = classNames.bind(styles)
 
 function Header() {
+    const userData = useContext(UserContext)
+
     const user = localStorage.getItem("user")
+
     const [index, setIndex] = useState(window.location.pathname.split('/')[1])
     const [offset, setOffset] = useState(0)
     const [isMenu, setIsMenu] = useState(false)
@@ -58,7 +62,7 @@ function Header() {
                         </Link>
                         <Link to='/location' className={cx('router-item')}>
                             <li className={cx('menu-item', `${index === "location" ? 'active' : null}`)} onClick={() => { setIndex("location") }}>
-                                Địa điểm
+                                Vị trí
                             </li>
                         </Link>
                     </ul>
@@ -71,7 +75,7 @@ function Header() {
                 <div className={cx('menu-contact')}>
                     <div>
                         {user ? <div className={cx('menu-profile')}>
-                            <p className={cx('menu-profile-name')}>{user}</p>
+                            <p className={cx('menu-profile-name')}>{userData?.name}</p>
                             <BiChevronDown className={cx('menu-profile-btn')} />
                             <div className={cx('menu-profile-drop')}>
                                 <ul>
@@ -92,7 +96,10 @@ function Header() {
                         }
                     </div>
                     <div className={cx('menu-contact-icon')}>
-                        {user ? <button className={cx('menu-btn-contact')}>Nhận công việc</button>
+                        {userData?.role === 0
+                            ? <Link to='/register'>
+                                <button className={cx('menu-btn-contact')}>Nhận công việc</button>
+                            </Link>
                             : <ul className={cx('menu-contact-icon-list')}>
                                 <li className={cx('menu-contact-icon-item')}><BsInstagram /></li>
                                 <li className={cx('menu-contact-icon-item')}><ImFacebook /></li>
@@ -102,7 +109,7 @@ function Header() {
                     </div>
                 </div>
             </div>
-        </header >
+        </header>
     )
 }
 

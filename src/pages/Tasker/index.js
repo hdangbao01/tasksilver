@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 const cx = classNames.bind(styles)
 
 function Tasker() {
-    const [slider, setSlider] = useState('100')
+    const [slider, setSlider] = useState(100)
     const [listTaskers, setListTaskers] = useState([])
     const [taskerOfTask, setTaskerOfTask] = useState([])
 
@@ -25,6 +25,10 @@ function Tasker() {
         setTaskerOfTask(idTasker[2])
     }, [])
 
+    useEffect(() => {
+        console.log(listTaskers[0]?.price);
+    }, [listTaskers])
+
     return (
         <div className={cx('tasker-wrapper')}>
             <div className={cx('tasks')}>
@@ -35,8 +39,13 @@ function Tasker() {
                                 itemTaskerOfTasks.taskId == taskerOfTask ?
                                     <li className={cx('tasks-content-item')} key={itemTaskerOfTasks.id}>
                                         <div className={cx('tasker-info')}>
-                                            <img className={cx('tasks-content-img')} src={images.background} alt='task' />
-                                            <p>50.000đ/h</p>
+                                            <img className={cx('tasks-content-img')}
+                                                src={itemTaskerOfTasks?.image === null
+                                                    ? require(`../../api-tasksilver/Photos/user1.jpg`)
+                                                    : require(`../../api-tasksilver/Photos/${itemTaskerOfTasks?.image}`)}
+                                                // src={require(`../../api-tasksilver/Photos/${itemTaskerOfTasks?.image}`)} 
+                                                alt='task' />
+                                            <p>{itemTaskerOfTasks?.price}đ/h</p>
                                             <Link to='/hiring'>
                                                 <button className={cx('tasks-content-btn')}>Thuê ngay</button>
                                             </Link>

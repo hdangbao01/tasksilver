@@ -39,7 +39,7 @@ function Services() {
                         <li className={cx('service-body-item')} key={itemService.id}>
                             <div className={cx('service-body-img')}>
                                 <Link to={`/tasks/${itemService.id}`} >
-                                    <img className={cx('service-body-item-img')} src={images.background} alt='service' />
+                                    <img className={cx('service-body-item-img')} src={require(`../../api-tasksilver/Photos/${itemService?.image}`)} alt='service' />
                                 </Link>
                             </div>
                             <div className={cx('service-body-task')}>
