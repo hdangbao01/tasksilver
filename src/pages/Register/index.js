@@ -3,54 +3,27 @@ import React from 'react';
 import classNames from 'classnames/bind'
 import styles from './Register.module.scss'
 import { useEffect, useState, useContext } from 'react'
-import { UserContext } from '~/App';
+import { AppContext } from '~/components/AppContext';
 import { IoIosArrowBack } from 'react-icons/io';
 
 const cx = classNames.bind(styles)
 
 const Register = () => {
-    const userData = useContext(UserContext)
+    const {userLogin, userData, listServices, listTasks} = useContext(AppContext)
 
-    const user = localStorage.getItem("user")
-
-
-    const [listServices, setListServices] = useState([])
-    const [listTasks, setListTasks] = useState([])
     const [selectService, setSelectService] = useState('')
     const [idService, setIdService] = useState('')
     const [idTask, setIdTask] = useState('')
     const [getTask, setGetTask] = useState('')
     const [registerTask, setRegisterTask] = useState('')
 
-    const getInforUser = () => {
-        fetch(`http://localhost:8000/service`)
-            .then((res) => res.json())
-            .then((res) => {
-                setListServices(res)
-            })
-        fetch(`http://localhost:8000/task`)
-            .then((res) => res.json())
-            .then((res) => {
-                setListTasks(res)
-            })
-    }
-
     useEffect(() => {
-        userData?.role === 1 ? getInforUser() : (window.location.href = '/')
+        if (!userLogin) {
+            window.location.href = '/'
+        } else if (userData?.role === 1) {
+            window.location.href = '/'
+        }
     }, [userData])
-
-    // useEffect(() => {
-    //     fetch(`http://localhost:8000/service`)
-    //         .then((res) => res.json())
-    //         .then((res) => {
-    //             setListServices(res)
-    //         })
-    //     fetch(`http://localhost:8000/task`)
-    //         .then((res) => res.json())
-    //         .then((res) => {
-    //             setListTasks(res)
-    //         })
-    // }, [])
 
     useEffect(() => {
         if (registerTask) {

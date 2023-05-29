@@ -2,14 +2,14 @@ import classNames from 'classnames/bind'
 import styles from './Hiring.module.scss'
 import { IoSend } from 'react-icons/io5'
 import { MdOutlineFactCheck } from 'react-icons/md'
-import { useState, useEffect, useContext } from 'react'
-import { UserContext } from '~/App';
+import { useState, useContext } from 'react'
+import { AppContext } from '~/components/AppContext'
 import images from '~/assets/images'
 
 const cx = classNames.bind(styles)
 
 function Hiring() {
-    const userData = useContext(UserContext)
+    const {userData} = useContext(AppContext)
 
     const [activity, setActivity] = useState(1)
 

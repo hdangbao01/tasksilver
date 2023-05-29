@@ -58,23 +58,25 @@
 }
 
 .service-body {
-    width: var(--default-width);
+    width: calc(var(--default-width) + 40px);
     margin: 0 auto;
     margin-bottom: 20px;
 }
 
 .service-body-list {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
 }
 
 .service-body-item {
-    width: 31%;
+    width: calc((100% / 3) - 40px);
     list-style: none;
     border: 1px solid var(--primary);
     border-radius: 5px;
-    margin-bottom: 20px;    
+    margin-right: 20px; 
+    margin-left: 20px; 
+    margin-bottom: 40px;   
 }
 
 .service-body-img {

@@ -2,7 +2,8 @@ import { BrowserRouter as Router, Link } from 'react-router-dom'
 import classNames from 'classnames/bind'
 import styles from './Home.module.scss'
 import images from '~/assets/images'
-import { useEffect, useState } from 'react'
+import { useState, useContext } from 'react'
+import { AppContext } from '~/components/AppContext';
 import { BiInfoCircle } from "react-icons/bi"
 import { HiStar } from "react-icons/hi"
 import { Splide, SplideSlide } from '@splidejs/react-splide';
@@ -11,8 +12,8 @@ import '@splidejs/react-splide/css';
 const cx = classNames.bind(styles)
 
 function Home() {
-    const [listServices, setListServices] = useState([])
-    const [listTasks, setListTasks] = useState([])
+    const {listServices, listTasks} = useContext(AppContext)
+
     const [search, setSearch] = useState('')
     const [checkSVAvailbe, setCheckSVAvailbe] = useState(true)
     const [checkTAvailbe, setCheckTAvailbe] = useState(true)
@@ -39,20 +40,6 @@ function Home() {
         str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, " ");
         return str;
     }
-
-    useEffect(() => {
-        fetch(`http://localhost:8000/service`)
-            .then((res) => res.json())
-            .then((res) => {
-                setListServices(res)
-            })
-
-        fetch(`http://localhost:8000/task`)
-            .then((res) => res.json())
-            .then((res) => {
-                setListTasks(res)
-            })
-    }, [])
 
     const handleSearch = () => {
         setCheckSVAvailbe(listServices.some(service => (
@@ -243,61 +230,40 @@ function Home() {
                     <p className={cx('location-title')}>Địa điểm chúng tôi làm việc - tasksilver</p>
                     <img className={cx('earth')} src={images.earth} alt='earth' />
                     <div className={cx('location-city')}>
-                        {/* {listUser.map(itemUser => (
-                            <div className={cx('location-city-item')}>
-                                <h3>{itemUser.address}</h3>
-                                <p>Ngu Hanh Son</p>
-                                <p>Lien Chieu</p>
-                                <p>Son Tra</p>
-                            </div>
-                        ))} */}
                         <div className={cx('location-city-item')}>
-                            <h3>Da Nang</h3>
-                            <p>Ngu Hanh Son</p>
-                            <p>Lien Chieu</p>
-                            <p>Son Tra</p>
+                            <h3>Đà Nẵng</h3>
+                            <p>Ngũ Hành Sơn</p>
+                            <p>Sơn Trà</p>
+                            <p>Thanh Khê</p>
+                            <p>Cẩm Lệ</p>
                         </div>
                         <div className={cx('location-city-item')}>
-                            <h3>Da Nang</h3>
-                            <p>Ngu Hanh Son</p>
-                            <p>Lien Chieu</p>
-                            <p>Son Tra</p>
+                            <h3>Đà Nẵng</h3>
+                            <p>Ngũ Hành Sơn</p>
+                            <p>Sơn Trà</p>
+                            <p>Thanh Khê</p>
+                            <p>Cẩm Lệ</p>
                         </div>
                         <div className={cx('location-city-item')}>
-                            <h3>Da Nang</h3>
-                            <p>Ngu Hanh Son</p>
-                            <p>Lien Chieu</p>
-                            <p>Son Tra</p>
+                            <h3>Đà Nẵng</h3>
+                            <p>Ngũ Hành Sơn</p>
+                            <p>Sơn Trà</p>
+                            <p>Thanh Khê</p>
+                            <p>Cẩm Lệ</p>
                         </div>
                         <div className={cx('location-city-item')}>
-                            <h3>Da Nang</h3>
-                            <p>Ngu Hanh Son</p>
-                            <p>Lien Chieu</p>
-                            <p>Son Tra</p>
+                            <h3>Đà Nẵng</h3>
+                            <p>Ngũ Hành Sơn</p>
+                            <p>Sơn Trà</p>
+                            <p>Thanh Khê</p>
+                            <p>Cẩm Lệ</p>
                         </div>
                         <div className={cx('location-city-item')}>
-                            <h3>Da Nang</h3>
-                            <p>Ngu Hanh Son</p>
-                            <p>Lien Chieu</p>
-                            <p>Son Tra</p>
-                        </div>
-                        <div className={cx('location-city-item')}>
-                            <h3>Da Nang</h3>
-                            <p>Ngu Hanh Son</p>
-                            <p>Lien Chieu</p>
-                            <p>Son Tra</p>
-                        </div>
-                        <div className={cx('location-city-item')}>
-                            <h3>Da Nang</h3>
-                            <p>Ngu Hanh Son</p>
-                            <p>Lien Chieu</p>
-                            <p>Son Tra</p>
-                        </div>
-                        <div className={cx('location-city-item')}>
-                            <h3>Da Nang</h3>
-                            <p>Ngu Hanh Son</p>
-                            <p>Lien Chieu</p>
-                            <p>Son Tra</p>
+                            <h3>Đà Nẵng</h3>
+                            <p>Ngũ Hành Sơn</p>
+                            <p>Sơn Trà</p>
+                            <p>Thanh Khê</p>
+                            <p>Cẩm Lệ</p>
                         </div>
                     </div>
                 </div>

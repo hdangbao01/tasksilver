@@ -1,11 +1,13 @@
 import classNames from 'classnames/bind'
 import styles from './Login.module.scss'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { AppContext } from '~/components/AppContext';
 
 const cx = classNames.bind(styles)
 
 function Login() {
-    const user = localStorage.getItem("user")
+    const { userLogin } = useContext(AppContext)
+
     const [switchLoginForm, setSwitchLoginForm] = useState(true)
     const [listAccount, setListAccount] = useState(true)
     const [listUser, setListUser] = useState('')
@@ -38,7 +40,7 @@ function Login() {
                 setListAccount(res)
             })
 
-        if (user) {
+        if (userLogin) {
             window.location.href = '/'
         }
     }, [])
@@ -120,9 +122,15 @@ function Login() {
         })
     }
 
+    const handlePressEnter = (e) => {
+        if (e.key === "Enter") {
+            handleLogin()
+        }
+    }
+
     return (
         <div className={cx('login')}>
-            {user ? <></> :
+            {userLogin ? <></> :
                 <div className={cx('login-body')}>
                     <div className={cx('left-login-body')}>
                         <p className={cx('left-login-title')}>Chào mừng đến với tasksilver!</p>
@@ -132,9 +140,15 @@ function Login() {
                     {switchLoginForm ? <div className={cx('right-login-body')}>
                         <div className={cx('right-login-form')}>
                             <label className={cx('right-login-label')}>Tài khoản</label>
-                            <input className={cx('right-login-input')} placeholder='Nhập tài khoản...' value={username} onChange={e => setUsername(e.target.value)} />
+                            <input className={cx('right-login-input')} placeholder='Nhập tài khoản...'
+                                value={username} onChange={e => setUsername(e.target.value)}
+                                onKeyDown={e => { handlePressEnter(e) }}
+                            />
                             <label className={cx('right-login-label')}>Mật khẩu</label>
-                            <input className={cx('right-login-input')} type='password' placeholder='Nhập mật khẩu...' value={password} onChange={e => setPassword(e.target.value)} />
+                            <input className={cx('right-login-input')} type='password' placeholder='Nhập mật khẩu...'
+                                value={password} onChange={e => setPassword(e.target.value)}
+                                onKeyDown={e => { handlePressEnter(e) }}
+                            />
                             <div className={cx('right-login-remember')}>
                                 <input className={cx('right-login-input-remember')} type='checkbox' /><label className={cx('right-login-label')}>Ghi nhớ đăng nhập</label>
                             </div>

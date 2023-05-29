@@ -2,26 +2,13 @@ import { BrowserRouter as Router, Link } from 'react-router-dom'
 import classNames from 'classnames/bind'
 import styles from './Services.module.scss'
 import images from '~/assets/images'
-import { useEffect, useState } from 'react'
+import { useContext } from 'react'
+import { AppContext } from '~/components/AppContext';
 
 const cx = classNames.bind(styles)
 
 function Services() {
-    const [listServices, setListServices] = useState([])
-    const [listTasks, setListTasks] = useState([])
-
-    useEffect(() => {
-        fetch(`http://localhost:8000/service`)
-            .then((res) => res.json())
-            .then((res) => {
-                setListServices(res)
-            })
-        fetch(`http://localhost:8000/task`)
-            .then((res) => res.json())
-            .then((res) => {
-                setListTasks(res)
-            })
-    }, [])
+    const { listServices, listTasks } = useContext(AppContext)
 
     return (
         <>

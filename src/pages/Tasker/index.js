@@ -9,9 +9,12 @@ import { useEffect, useState } from 'react'
 const cx = classNames.bind(styles)
 
 function Tasker() {
-    const [slider, setSlider] = useState(100)
+    const [minPrice, setMinPrice] = useState('')
+    const [maxPrice, setMaxPrice] = useState('')
+    const [slider, setSlider] = useState('')
     const [listTaskers, setListTaskers] = useState([])
     const [taskerOfTask, setTaskerOfTask] = useState([])
+    const [taskerOfPrice, setTaskerOfPrice] = useState([])
 
     useEffect(() => {
         fetch(`http://localhost:8000/user`)
@@ -26,8 +29,28 @@ function Tasker() {
     }, [])
 
     useEffect(() => {
-        console.log(listTaskers[0]?.price);
+        let priceArr = []
+        listTaskers.forEach(itemTasker => {
+            if (itemTasker.price) {
+                priceArr.push(itemTasker.price)
+            }
+        })
+        setMinPrice(Math.min(...priceArr))
+        setMaxPrice(Math.max(...priceArr))
+        setSlider(Math.max(...priceArr))
     }, [listTaskers])
+
+    useEffect(() => {
+        const taskPrice = listTaskers.filter(itemTask => (
+            itemTask.price <= slider
+        ))
+        const findTasker = () => {
+            setTaskerOfPrice(taskPrice)
+        }
+        const myTimeout = setTimeout(findTasker, 500);
+
+        return clearTimeout(myTimeout);
+    }, [slider])
 
     return (
         <div className={cx('tasker-wrapper')}>
@@ -35,32 +58,32 @@ function Tasker() {
                 <div className={cx('tasks-body')}>
                     <div className={cx('tasks-content')}>
                         <ul className={cx('tasks-content-list')}>
-                            {listTaskers.map(itemTaskerOfTasks => (
-                                itemTaskerOfTasks.taskId == taskerOfTask ?
-                                    <li className={cx('tasks-content-item')} key={itemTaskerOfTasks.id}>
-                                        <div className={cx('tasker-info')}>
-                                            <img className={cx('tasks-content-img')}
-                                                src={itemTaskerOfTasks?.image === null
-                                                    ? require(`../../api-tasksilver/Photos/user1.jpg`)
-                                                    : require(`../../api-tasksilver/Photos/${itemTaskerOfTasks?.image}`)}
-                                                // src={require(`../../api-tasksilver/Photos/${itemTaskerOfTasks?.image}`)} 
-                                                alt='task' />
-                                            <p>{itemTaskerOfTasks?.price}đ/h</p>
-                                            <Link to='/hiring'>
-                                                <button className={cx('tasks-content-btn')}>Thuê ngay</button>
-                                            </Link>
+                            {taskerOfPrice.map(itemTaskerOfTasks => (
+                                itemTaskerOfTasks.taskId == taskerOfTask &&
+                                <li className={cx('tasks-content-item')} key={itemTaskerOfTasks.id}>
+                                    <div className={cx('tasker-info')}>
+                                        <img className={cx('tasks-content-img')}
+                                            src={itemTaskerOfTasks?.image === null
+                                                ? require(`../../api-tasksilver/Photos/user1.jpg`)
+                                                : require(`../../api-tasksilver/Photos/${itemTaskerOfTasks?.image}`)}
+                                            // src={require(`../../api-tasksilver/Photos/${itemTaskerOfTasks?.image}`)} 
+                                            alt='task' />
+                                        <p>{itemTaskerOfTasks?.price}đ/h</p>
+                                        <Link to='/hiring'>
+                                            <button className={cx('tasks-content-btn')}>Thuê ngay</button>
+                                        </Link>
+                                    </div>
+                                    <div className={cx('tasks-content-desc')}>
+                                        <h2>{itemTaskerOfTasks.name} <span className={cx('tasker-activity')}>Chưa được thuê</span></h2>
+                                        <div className={cx('taskers-star')}>
+                                            <HiStar /> <HiStar /> <HiStar /> <HiStar /> <HiStar /> <span>5 / 5</span>
                                         </div>
-                                        <div className={cx('tasks-content-desc')}>
-                                            <h2>{itemTaskerOfTasks.name} <span className={cx('tasker-activity')}>Chưa được thuê</span></h2>
-                                            <div className={cx('taskers-star')}>
-                                                <HiStar /> <HiStar /> <HiStar /> <HiStar /> <HiStar /> <span>5 / 5</span>
-                                            </div>
-                                            <p><span><BiCheckShield /></span>Kỹ năng: Thành thạo Tiếng Anh</p>
-                                            <p><span><BiCheckCircle /></span>Đã hoàn thành: 200 công việc</p>
-                                            <h3>Giới thiệu:</h3>
-                                            <p>{itemTaskerOfTasks.description}</p>
-                                        </div>
-                                    </li> : <></>
+                                        <p><span><BiCheckShield /></span>Kỹ năng: Thành thạo Tiếng Anh</p>
+                                        <p><span><BiCheckCircle /></span>Đã hoàn thành: 200 công việc</p>
+                                        <h3>Giới thiệu:</h3>
+                                        <p>{itemTaskerOfTasks.description}</p>
+                                    </div>
+                                </li>
                             ))}
                         </ul>
                     </div>
@@ -69,10 +92,11 @@ function Tasker() {
                             <h3 className={cx('tasks-step-title')}>Giá</h3>
                             <div className={cx('slidecontainer')}>
                                 <div className={cx('slider-arr')}>
-                                    <span>1.000đ</span><span>100.000đ</span>
+                                    <span>{minPrice}đ</span><span>{maxPrice}đ</span>
                                 </div>
-                                <input type="range" min="1" max="100" value={slider} className={cx('slider')} onChange={(e) => { setSlider(e.target.value) }} />
-                                <p>Value: <span>{slider}.000đ</span></p>
+                                <input type="range" min={minPrice} max={maxPrice} className={cx('slider')}
+                                    value={slider} onChange={(e) => { setSlider(e.target.value) }} />
+                                <p>Value: <span>{slider}đ</span></p>
                             </div>
                         </div>
                         <div>

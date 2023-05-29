@@ -4,36 +4,46 @@ from HiredApp.models import Service, Message, Task, Contract, User, Rating, Acco
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
-        fields = ('id','name','description','image')
+        fields = '__all__'
 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ('id','name','description', 'serviceId','image')
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id','name','phone','address','gender','creditcard','role','price','description','taskId','image')
+        fields = '__all__'
 
 class RatingSerializer(serializers.ModelSerializer):
+    temp_name = UserSerializer(
+        many=True,
+        read_only=True
+    )
     class Meta:
         model = Rating
-        fields = ('id','ofuserId','touserId','star','comment', 'time')
-        depth = 1
+        fields = '__all__'
 
 class ContractSerializer(serializers.ModelSerializer):
+    temp_name = UserSerializer(
+        many=True,
+        read_only=True
+    )
     class Meta:
         model = Contract
-        fields = ('id','ofuserId','touserId','activity','starttime','endtime','pay','taskId')
-        depth = 1
+        fields = '__all__'
 
 class MessageSerializer(serializers.ModelSerializer):
+    temp_name = UserSerializer(
+        many=True,
+        read_only=True
+    )
     class Meta:
         model = Message
-        fields = ('id','ofuserId','touserId','content', 'time')
+        fields = '__all__'
 
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ('id','username','password', 'userId')
+        fields = '__all__'

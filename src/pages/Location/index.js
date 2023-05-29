@@ -1,14 +1,16 @@
 import classNames from 'classnames/bind'
 import styles from './Location.module.scss'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { AppContext } from '~/components/AppContext';
 import Map from '~/components/Map';
 import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 
 const cx = classNames.bind(styles)
 
 function Location() {
+    const {listUser} = useContext(AppContext)
+
     const [coords, setCoords] = useState(null)
-    const [listUser, setListUser] = useState('')
     const [ipLocation, setIpLocation] = useState('')
     const [checkAvailbe, setCheckAvailbe] = useState(1)
 
@@ -34,14 +36,6 @@ function Location() {
         str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g," ");
         return str;
     }
-
-    useEffect(() => {
-        fetch(`http://localhost:8000/user`)
-            .then((res) => res.json())
-            .then((res) => {
-                setListUser(res)
-            })
-    }, [])
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(({ coords: { longitude, latitude } }) => {

@@ -3,7 +3,7 @@ import styles from './Header.module.scss'
 import images from '~/assets/images'
 import { BrowserRouter as Router, Link } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react';
-import { UserContext } from '~/App';
+import { AppContext } from '~/components/AppContext';
 import { BsInstagram } from "react-icons/bs";
 import { ImFacebook } from "react-icons/im";
 import { FaLinkedinIn } from "react-icons/fa";
@@ -14,9 +14,7 @@ import { HiOutlineLogout } from "react-icons/hi";
 const cx = classNames.bind(styles)
 
 function Header() {
-    const userData = useContext(UserContext)
-
-    const user = localStorage.getItem("user")
+    const {userLogin, userData} = useContext(AppContext)
 
     const [index, setIndex] = useState(window.location.pathname.split('/')[1])
     const [offset, setOffset] = useState(0)
@@ -74,7 +72,7 @@ function Header() {
                 </div>
                 <div className={cx('menu-contact')}>
                     <div>
-                        {user ? <div className={cx('menu-profile')}>
+                        {userLogin ? <div className={cx('menu-profile')}>
                             <p className={cx('menu-profile-name')}>{userData?.name}</p>
                             <BiChevronDown className={cx('menu-profile-btn')} />
                             <div className={cx('menu-profile-drop')}>

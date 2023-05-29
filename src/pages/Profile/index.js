@@ -2,14 +2,12 @@ import classNames from 'classnames/bind'
 import styles from './Profile.module.scss'
 import images from '~/assets/images'
 import { useState, useEffect, useRef, useContext } from 'react'
-import { UserContext } from '~/App';
+import { AppContext } from '~/components/AppContext';
 
 const cx = classNames.bind(styles)
 
 function Profile() {
-    const userData = useContext(UserContext)
-
-    const user = localStorage.getItem("user")
+    const {userLogin, userData} = useContext(AppContext)
 
     const [index, setIndex] = useState(0)
     const [upImg, setUpImg] = useState('')
@@ -39,13 +37,13 @@ function Profile() {
         fetch(`http://localhost:8000/account`)
             .then((res) => res.json())
             .then((res) => {
-                setInforAccount(res.find(iA => iA.username === user.toString()))
+                setInforAccount(res.find(iA => iA.username === userLogin.toString()))
             })
     }
 
     useEffect(() => {
-        user ? getInforUser() : window.location.href = '/'
-    }, [user])
+        userLogin ? getInforUser() : window.location.href = '/'
+    }, [userLogin])
 
     useEffect(() => {
         if (upImg) {
@@ -150,7 +148,7 @@ function Profile() {
 
     return (
         <div className={cx('profile-wrapper')}>
-            {user ? <div className={cx('profile-first')}>
+            {userLogin ? <div className={cx('profile-first')}>
                 <div className={cx('profile-main')}>
                     <div className={cx('profile-header')}>
                         <img ref={viwImg} className={cx('profile-avatar')}

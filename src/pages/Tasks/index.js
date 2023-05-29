@@ -3,28 +3,16 @@ import classNames from 'classnames/bind'
 import styles from './Tasks.module.scss'
 import { MdNavigateNext } from "react-icons/md"
 import images from '~/assets/images'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import { AppContext } from '~/components/AppContext';
 
 const cx = classNames.bind(styles)
 
 function Tasks() {
-    const [listTasks, setListTasks] = useState([])
-    const [listServices, setListServices] = useState([])
+    const {listServices, listTasks} = useContext(AppContext)
     const [taskOfService, setTaskOfService] = useState([])
 
     useEffect(() => {
-        fetch(`http://localhost:8000/task`)
-            .then((res) => res.json())
-            .then((res) => {
-                setListTasks(res)
-            })
-
-        fetch(`http://localhost:8000/service`)
-            .then((res) => res.json())
-            .then((res) => {
-                setListServices(res)
-            })
-
         const idTask = window.location.pathname.split('/')
 
         setTaskOfService(idTask[2])
