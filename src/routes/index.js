@@ -49,7 +49,7 @@ const publicRoutes = [
         layout: NoFooter
     },
     {
-        path: '/hiring',
+        path: '/hiring/:id/:room',
         component: Hiring,
         layout: JustContent
     }

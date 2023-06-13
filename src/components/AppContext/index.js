@@ -1,4 +1,8 @@
-import { useState, useEffect, createContext } from 'react';
+import { useState, useEffect, createContext, useMemo } from 'react'
+import Load from '~/components/Load'
+import { db } from '~/firebase/config'
+import { collection, onSnapshot } from "firebase/firestore"
+import useFirestore from '~/hooks/useFirestore';
 
 export const AppContext = createContext()
 
@@ -11,6 +15,8 @@ const AppProvider = ({ children }) => {
     const [listUser, setListUser] = useState('')
     const [listServices, setListServices] = useState([])
     const [listTasks, setListTasks] = useState([])
+    const [listContract, setListContract] = useState([])
+    const [selectedRoom, setSelectedRoom] = useState('')
 
     useEffect(() => {
         if (userLogin) {
@@ -47,12 +53,49 @@ const AppProvider = ({ children }) => {
             })
     }, [inforAccount])
 
+    useEffect(() => {
+        // Add Document
+        const colRef = collection(db, "contract")
+        // Real Time Database
+        const unsubscribe = onSnapshot(colRef, (snapshot) => {
+            const data = snapshot.docs.map(doc => ({
+                ...doc.data(),
+                id: doc.id
+            }))
+            // console.log(data)
+            setListContract(data)
+        })
+
+        return unsubscribe
+    }, [])
+
+    // Get List Contract
+    const contractCond = useMemo(() => {
+        return {
+            fieldName: 'members.ofUserId',
+            operator: '==',
+            compareValue: userData?.id
+        }
+    }, [userData?.id])
+
+    const contract = useFirestore('contract', contractCond)
+
+    const contract2Cond = useMemo(() => {
+        return {
+            fieldName: 'members.toUserId',
+            operator: '==',
+            compareValue: userData?.id
+        }
+    }, [userData?.id])
+
+    const contract2 = useFirestore('contract', contract2Cond)
+
     return (
         <AppContext.Provider
             value={{
-                userLogin, userData, listUser, listServices, listTasks, loading
+                userLogin, userData, listUser, listServices, listTasks, listContract, contract, contract2, selectedRoom, setSelectedRoom, loading
             }}>
-            {children}
+            {loading ? <Load /> : children}
         </AppContext.Provider>
     );
 };

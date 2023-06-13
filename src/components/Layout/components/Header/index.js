@@ -10,11 +10,13 @@ import { FaLinkedinIn } from "react-icons/fa";
 import { BiChevronDown } from "react-icons/bi";
 import { AiOutlineUser } from "react-icons/ai";
 import { HiOutlineLogout } from "react-icons/hi";
+// import { db } from '~/firebase/config'
+// import { collection, addDoc, serverTimestamp } from "firebase/firestore"
 
 const cx = classNames.bind(styles)
 
 function Header() {
-    const {userLogin, userData} = useContext(AppContext)
+    const { userLogin, userData } = useContext(AppContext)
 
     const [index, setIndex] = useState(window.location.pathname.split('/')[1])
     const [offset, setOffset] = useState(0)
@@ -28,7 +30,7 @@ function Header() {
         window.addEventListener('scroll', onScroll, { passive: true })
 
         return () => window.removeEventListener('scroll', onScroll)
-    }, []);
+    }, [])
     // Active Backgound Menu
     useEffect(() => {
         if (offset > 1) {
@@ -42,6 +44,25 @@ function Header() {
         localStorage.removeItem("user")
         window.location.reload()
     }
+
+    // const colRef = collection(db, "contract")
+
+    // const addNewDoc = async () => {
+    //     try {
+    //         const docRef = await addDoc(colRef, {
+    //             members: {
+    //                 ofUserId: 20,
+    //                 toUserId: 5
+    //             },
+    //             activity: 1,
+    //             createdAt: serverTimestamp(),
+    //             taskId: 1
+    //         });
+    //         console.log("Adding document Success: ", docRef);
+    //     } catch (e) {
+    //         console.error("Error adding document: ", e);
+    //     }
+    // }
 
     return (
         <header className={cx('wrapper', { 'fixed': isMenu })}>
@@ -63,6 +84,9 @@ function Header() {
                                 Vị trí
                             </li>
                         </Link>
+                        {/* <li className={cx('menu-item')} onClick={() => addNewDoc()}>
+                            Add
+                        </li> */}
                     </ul>
                 </div>
 

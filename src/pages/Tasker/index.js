@@ -4,11 +4,14 @@ import styles from './Tasker.module.scss'
 import images from '~/assets/images'
 import { HiStar } from "react-icons/hi"
 import { BiCheckShield, BiCheckCircle } from "react-icons/bi"
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import { AppContext } from '~/components/AppContext'
 
 const cx = classNames.bind(styles)
 
 function Tasker() {
+    const { listContract } = useContext(AppContext)
+
     const [minPrice, setMinPrice] = useState('')
     const [maxPrice, setMaxPrice] = useState('')
     const [slider, setSlider] = useState('')
@@ -41,15 +44,11 @@ function Tasker() {
     }, [listTaskers])
 
     useEffect(() => {
-        const taskPrice = listTaskers.filter(itemTask => (
-            itemTask.price <= slider
-        ))
-        const findTasker = () => {
-            setTaskerOfPrice(taskPrice)
-        }
-        const myTimeout = setTimeout(findTasker, 500);
-
-        return clearTimeout(myTimeout);
+        setTimeout(() => {
+            setTaskerOfPrice(listTaskers.filter(itemTask => (
+                itemTask.price <= slider
+            )))
+        }, 500)
     }, [slider])
 
     return (
@@ -59,8 +58,8 @@ function Tasker() {
                     <div className={cx('tasks-content')}>
                         <ul className={cx('tasks-content-list')}>
                             {taskerOfPrice.map(itemTaskerOfTasks => (
-                                itemTaskerOfTasks.taskId == taskerOfTask &&
-                                <li className={cx('tasks-content-item')} key={itemTaskerOfTasks.id}>
+                                itemTaskerOfTasks?.taskId == taskerOfTask &&
+                                <li className={cx('tasks-content-item')} key={itemTaskerOfTasks?.id}>
                                     <div className={cx('tasker-info')}>
                                         <img className={cx('tasks-content-img')}
                                             src={itemTaskerOfTasks?.image === null
@@ -69,19 +68,29 @@ function Tasker() {
                                             // src={require(`../../api-tasksilver/Photos/${itemTaskerOfTasks?.image}`)} 
                                             alt='task' />
                                         <p>{itemTaskerOfTasks?.price}đ/h</p>
-                                        <Link to='/hiring'>
-                                            <button className={cx('tasks-content-btn')}>Thuê ngay</button>
+                                        <Link to={`/hiring/${itemTaskerOfTasks?.id}/room`}>
+                                            {(listContract.find(user => (
+                                                user.members?.toUserId === itemTaskerOfTasks?.id
+                                            )))?.activity === 1
+                                                ? <></>
+                                                : <button className={cx('tasks-content-btn')}>Thuê ngay</button>}
                                         </Link>
                                     </div>
                                     <div className={cx('tasks-content-desc')}>
-                                        <h2>{itemTaskerOfTasks.name} <span className={cx('tasker-activity')}>Chưa được thuê</span></h2>
+                                        <h2>{itemTaskerOfTasks?.name}
+                                            {(listContract.find(user => (
+                                                user?.members?.toUserId === itemTaskerOfTasks?.id
+                                            )))?.activity === 1
+                                                ? <span className={cx('tasker-activity')}>Đang được thuê</span>
+                                                : <span className={cx('tasker-activity', 'hiring')}>Chưa được thuê</span>}
+                                        </h2>
                                         <div className={cx('taskers-star')}>
                                             <HiStar /> <HiStar /> <HiStar /> <HiStar /> <HiStar /> <span>5 / 5</span>
                                         </div>
                                         <p><span><BiCheckShield /></span>Kỹ năng: Thành thạo Tiếng Anh</p>
                                         <p><span><BiCheckCircle /></span>Đã hoàn thành: 200 công việc</p>
                                         <h3>Giới thiệu:</h3>
-                                        <p>{itemTaskerOfTasks.description}</p>
+                                        <p>{itemTaskerOfTasks?.description}</p>
                                     </div>
                                 </li>
                             ))}

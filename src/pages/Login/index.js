@@ -1,7 +1,11 @@
 import classNames from 'classnames/bind'
 import styles from './Login.module.scss'
 import { useState, useEffect, useContext } from 'react'
-import { AppContext } from '~/components/AppContext';
+import { AppContext } from '~/components/AppContext'
+// import { auth } from '~/firebase/config'
+// import { FacebookAuthProvider, onAuthStateChanged, signInWithPopup } from "firebase/auth"
+
+// const fbProvider = new FacebookAuthProvider()
 
 const cx = classNames.bind(styles)
 
@@ -122,6 +126,24 @@ function Login() {
         })
     }
 
+    // const handleFbLogin = () => {
+    //     signInWithPopup(auth, fbProvider)
+    // .then((result) => {
+    //     const user = result.user
+    //     console.log('Đăng nhập thành công!')
+    // })
+    // .catch((error) => {
+    //     console.log('Đăng nhập không thành công!')
+    // });
+    // }
+
+    // onAuthStateChanged(auth, (user) => {
+    //     if (user) {
+    //         console.log(user)
+    //         window.location.href = '/'
+    //     }
+    // })
+
     const handlePressEnter = (e) => {
         if (e.key === "Enter") {
             handleLogin()
@@ -134,8 +156,17 @@ function Login() {
                 <div className={cx('login-body')}>
                     <div className={cx('left-login-body')}>
                         <p className={cx('left-login-title')}>Chào mừng đến với tasksilver!</p>
-                        <button className={cx('left-login-btn-login', switchLoginForm ? 'active' : '')} onClick={switchLogin} >Đăng nhập</button>
-                        <button className={cx('left-login-btn-signup', switchLoginForm ? '' : 'active')} onClick={switchRegister} >Đăng ký</button>
+                        <button className={cx('left-login-btn-login', switchLoginForm ? 'active' : '')} onClick={switchLogin}>
+                            Đăng nhập
+                        </button>
+                        <button className={cx('left-login-btn-signup', switchLoginForm ? '' : 'active')} onClick={switchRegister}>
+                            Đăng ký
+                        </button>
+                        <button className={cx('left-login-btn-signup', 'active')}
+                            // onClick={handleFbLogin}
+                        >
+                            Tiếp tục với Facebook
+                        </button>
                     </div>
                     {switchLoginForm ? <div className={cx('right-login-body')}>
                         <div className={cx('right-login-form')}>

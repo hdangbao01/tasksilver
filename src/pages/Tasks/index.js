@@ -43,7 +43,7 @@ function Tasks() {
                         <ul className={cx('tasks-content-list')}>
                             {listTasks.map(itemTaskOfService => (
                                 itemTaskOfService.serviceId == taskOfService ?
-                                    <li className={cx('tasks-content-item')} key={itemTaskOfService.id}>
+                                    <li className={cx('tasks-content-item')} key={itemTaskOfService.name}>
                                         <img className={cx('tasks-content-img')} src={images.background} alt='task' />
                                         <div className={cx('tasks-content-desc')}>
                                             <h2>{itemTaskOfService.name}</h2>
@@ -73,7 +73,7 @@ function Tasks() {
                 <h1 className={cx('tasks-footer-title')}>Chọn các dịch vụ khác</h1>
                 <ul className={cx('other-service-list')}>
                     {listServices.map(listServices => (
-                        <li className={cx('other-service-item')}>
+                        <li className={cx('other-service-item')} key={listServices.id}>
                             <a href={`/tasks/${listServices.id}`}>
                                 {listServices.name}
                             </a>

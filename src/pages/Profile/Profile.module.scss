@@ -175,9 +175,11 @@
         height: 150px;
         border: 1px solid var(--primary);
         margin-right: 20px;
+        object-fit: cover;
     }
 
-    button {
+    // button {
+    .btn-connect {
         cursor: pointer;
         background-color: var(--btn-dark);
         color: var(--text-color);

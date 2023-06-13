@@ -1,13 +1,15 @@
+import { BrowserRouter as Router, Link } from 'react-router-dom'
 import classNames from 'classnames/bind'
 import styles from './Profile.module.scss'
-import images from '~/assets/images'
-import { useState, useEffect, useRef, useContext } from 'react'
+// import images from '~/assets/images'
+import { useState, useEffect, useRef, useContext, useMemo } from 'react'
 import { AppContext } from '~/components/AppContext';
+import useFirestore from '~/hooks/useFirestore';
 
 const cx = classNames.bind(styles)
 
 function Profile() {
-    const {userLogin, userData} = useContext(AppContext)
+    const { userLogin, userData, listTasks, listUser, contract, contract2, setSelectedRoom } = useContext(AppContext)
 
     const [index, setIndex] = useState(0)
     const [upImg, setUpImg] = useState('')
@@ -31,6 +33,7 @@ function Profile() {
     const tabBar0 = useRef()
     const tabBar1 = useRef()
     const tabBar2 = useRef()
+    const tabBar3 = useRef()
     const tabLine = useRef()
 
     const getInforUser = () => {
@@ -120,6 +123,9 @@ function Profile() {
         } else if (index === 2) {
             tabLine.current.style.left = tabBar2.current.offsetLeft + "px"
             tabLine.current.style.width = tabBar2.current.offsetWidth + "px"
+        } else if (index === 3) {
+            tabLine.current.style.left = tabBar3.current.offsetLeft + "px"
+            tabLine.current.style.width = tabBar3.current.offsetWidth + "px"
         }
     }, [index])
 
@@ -148,33 +154,41 @@ function Profile() {
 
     return (
         <div className={cx('profile-wrapper')}>
-            {userLogin ? <div className={cx('profile-first')}>
+            {userLogin && <div className={cx('profile-first')}>
                 <div className={cx('profile-main')}>
                     <div className={cx('profile-header')}>
-                        <img ref={viwImg} className={cx('profile-avatar')}
-                            // src={viewImg ? viewImg : images.background}
-                            // src={`../../../api-tasksilver/Photos/${userData.image}`}
+                        <img ref={viwImg} className={cx('profile-avatar')} alt='avatarUser'
                             src={viewImg
-                                ? viewImg : (userData?.image
+                                ? viewImg
+                                : (userData?.image
                                     ? (userData?.image === null ? '' : require(`../../api-tasksilver/Photos/${userData?.image}`))
                                     : require(`../../api-tasksilver/Photos/user1.jpg`))}
-                            alt='avatarUser' />
+                        />
                         <div>
-                            <h1>{userData ? userData.name : ''}</h1>
+                            {/* <h1>{userData ? userData.name : ''}</h1> */}
+                            <h1>{userData?.name}</h1>
                             <input ref={refImg} className={cx('file-img')} type='file' onChange={(e) => priviewImg()} />
                         </div>
                     </div>
                     <div className={cx('profile-bar')}>
                         <ul>
-                            <li ref={tabBar0} className={cx(`${index === 0 ? 'active' : null}`)} onClick={() => { setIndex(0) }}>
+                            <li ref={tabBar0} className={cx(`${index === 0 ? 'active' : null}`)}
+                                onClick={() => { setIndex(0) }}>
                                 Tổng quan
                             </li>
-                            <li ref={tabBar1} className={cx(`${index === 1 ? 'active' : null}`)} onClick={() => { setIndex(1) }}>
+                            <li ref={tabBar1} className={cx(`${index === 1 ? 'active' : null}`)}
+                                onClick={() => { setIndex(1) }}>
                                 Thông tin cá nhân
                             </li>
-                            <li ref={tabBar2} className={cx(`${index === 2 ? 'active' : null}`)} onClick={() => { setIndex(2) }}>
-                                {userData?.role === 0 ? "Thuê" : "Công việc"}
+                            <li ref={tabBar2} className={cx(`${index === 2 ? 'active' : null}`)}
+                                onClick={() => { setIndex(2) }}>
+                                {/* {userData?.role === 0 ? "Thuê" : "Công việc"} */}
+                                Thuê
                             </li>
+                            {userData?.role === 1 && <li ref={tabBar3} className={cx(`${index === 3 ? 'active' : null}`)}
+                                onClick={() => { setIndex(3) }}>
+                                Công việc
+                            </li>}
                         </ul>
                         <div ref={tabLine} className={cx('profile-bar-line')}></div>
                     </div>
@@ -186,19 +200,20 @@ function Profile() {
                                         <h3>Thông tin cá nhân</h3>
                                         <div className={cx('block')}>
                                             <label className={cx('label-info')}>Họ tên:</label>
-                                            <input className={cx('input-info')} defaultValue={userData ? userData.name : ''}
+                                            {/* <input className={cx('input-info')} defaultValue={userData ? userData.name : ''} */}
+                                            <input className={cx('input-info')} defaultValue={userData?.name}
                                                 onChange={e => setName(e.target.value)}
                                             />
                                         </div>
                                         <div className={cx('block')}>
                                             <label className={cx('label-info')}>Giới tính:</label>
-                                            <input className={cx('input-info')} defaultValue={userData ? userData.gender : ''}
+                                            <input className={cx('input-info')} defaultValue={userData?.gender}
                                                 onChange={e => setGender(e.target.value)}
                                             />
                                         </div>
                                         <div className={cx('block')}>
                                             <label className={cx('label-info')}>Giới thiệu:</label>
-                                            <input className={cx('input-info')} defaultValue={userData ? userData.description : ''}
+                                            <input className={cx('input-info')} defaultValue={userData?.description}
                                                 onChange={e => setDesc(e.target.value)}
                                             />
                                         </div>
@@ -207,19 +222,19 @@ function Profile() {
                                         <h3>Liên lạc</h3>
                                         <div className={cx('block')}>
                                             <label className={cx('label-info')}>Tài khoản (Email):</label>
-                                            <input className={cx('input-info')} defaultValue={inforAccount.username}
+                                            <input className={cx('input-info')} defaultValue={inforAccount?.username}
                                                 onChange={e => setEmail(e.target.value)}
                                             />
                                         </div>
                                         <div className={cx('block')}>
                                             <label className={cx('label-info')}>Điện thoại:</label>
-                                            <input className={cx('input-info')} defaultValue={userData ? userData.phone : ''}
+                                            <input className={cx('input-info')} defaultValue={userData?.phone}
                                                 onChange={e => setPhone(e.target.value)}
                                             />
                                         </div>
                                         <div className={cx('block')}>
                                             <label className={cx('label-info')}>Địa chỉ:</label>
-                                            <input className={cx('input-info')} defaultValue={userData ? userData.address : ''}
+                                            <input className={cx('input-info')} defaultValue={userData?.address}
                                                 onChange={e => setAddress(e.target.value)}
                                             />
                                         </div>
@@ -228,7 +243,7 @@ function Profile() {
                                         <h3>Thanh toán</h3>
                                         <div className={cx('block')}>
                                             <label className={cx('label-info')}>Credit card:</label>
-                                            <input className={cx('input-info')} defaultValue={userData ? userData.creditcard : ''}
+                                            <input className={cx('input-info')} defaultValue={userData?.creditcard}
                                                 onChange={e => setCard(e.target.value)}
                                             />
                                         </div>
@@ -237,7 +252,7 @@ function Profile() {
                                         <h3>Bảo mật</h3>
                                         <div className={cx('block')}>
                                             <label className={cx('label-info')}>Mật khẩu:</label>
-                                            <input className={cx('input-info')} defaultValue={inforAccount.password} type='password'
+                                            <input className={cx('input-info')} defaultValue={inforAccount?.password} type='password'
                                                 onChange={e => setPass(e.target.value)}
                                             />
                                         </div>
@@ -250,35 +265,148 @@ function Profile() {
                         </div>
                         <div className={cx('profile-block', `${index === 2 ? 'active' : null}`)}>
                             <h3>Đang thuê</h3>
-                            <div className={cx('hiried')}>
-                                <img src={images.tasker} alt='avatar' />
-                                <div>
-                                    <h2 className={cx('hiried-name')}>Ho Bao</h2>
-                                    <p>Công việc: Dọn nhà</p>
-                                    {userData?.role === 0 ? <></> : <p>Địa chỉ:</p>}
-                                    <button>Kết nối</button>
+                            {contract.map(hiringItem => (
+                                !!(hiringItem?.activity === 1) &&
+                                <div div className={cx('hiried')} key={hiringItem?.id}>
+                                    <img src={require(`../../api-tasksilver/Photos/${listUser.find(userItem => (
+                                        userItem?.id === hiringItem?.members?.toUserId
+                                    ))?.image}`)} alt='avatar' />
+                                    <div>
+                                        <h2 className={cx('hiried-name')}>
+                                            {listUser.find(userItem => (
+                                                userItem?.id === hiringItem?.members?.toUserId
+                                            ))?.name}
+                                        </h2>
+                                        <p>
+                                            Công việc: {listTasks.find(taskItem => (
+                                                taskItem?.id === hiringItem?.taskId
+                                            ))?.name}
+                                        </p>
+                                        <p>Điện thoại: {listUser.find(userItem => (
+                                            userItem?.id === hiringItem?.members?.toUserId
+                                        ))?.phone
+                                        }
+                                        </p>
+                                        {/* <button onClick={e => connectTasker(hiringItem.members.toUserId, hiringItem.id)}> */}
+                                        <Link
+                                            className={cx('btn-connect')}
+                                            to={`/hiring/${hiringItem.members.toUserId}/${hiringItem.id}`}
+                                            onClick={() => setSelectedRoom(hiringItem.id)}
+                                        >
+                                            Kết nối
+                                        </Link>
+                                        {/* </button> */}
+                                    </div>
                                 </div>
-                            </div>
+                            ))}
 
-                            {/* <h3>Lịch sử thuê</h3>
-                            <div className={cx('hiried')}>
-                                <img src={images.tasker} alt='avatar' />
-                                <div>
-                                    <h2 className={cx('hiried-name')}>Ho Bao</h2>
-                                    <p>Công việc: Dọn nhà</p>
-                                    <p>Thời gian: 1h30p</p>
-                                    <p>Tổng phí: 60.000đ</p>
+                            <h3>Lịch sử thuê</h3>
+                            {contract.map(hiringItem => (
+                                !!(hiringItem?.activity === 2) &&
+                                <div className={cx('hiried')} key={hiringItem?.id}>
+                                    <img src={require(`../../api-tasksilver/Photos/${listUser.find(userItem => (
+                                        userItem.id === hiringItem.members.toUserId
+                                    )).image}`)} alt='avatar' />
+                                    <div>
+                                        <h2 className={cx('hiried-name')}>
+                                            {listUser.find(userItem => (
+                                                userItem.id === hiringItem.members.toUserId
+                                            )).name}
+                                        </h2>
+                                        <p>
+                                            Công việc: {listTasks.find(taskItem => (
+                                                taskItem.id === hiringItem.taskId
+                                            )).name}
+                                        </p>
+                                        <p>Thời gian: 1h30p</p>
+                                        <p>
+                                            Tổng phí: {listUser.find(userItem => (
+                                                userItem.id === hiringItem.members.toUserId
+                                            )).price} đ
+                                        </p>
+                                    </div>
+                                    <div className={cx('hiried-time')}>
+                                        {hiringItem?.id}
+                                    </div>
                                 </div>
-                                <div className={cx('hiried-time')}>
-                                    05/05/2023
+                            ))}
+                        </div>
+
+                        <div className={cx('profile-block', `${index === 3 ? 'active' : null}`)}>
+                            <h3>Đang thuê</h3>
+                            {contract2.map(hiringItem => (
+                                !!(hiringItem?.activity === 1) &&
+                                <div div className={cx('hiried')} key={hiringItem?.id}>
+                                    <img src={require(`../../api-tasksilver/Photos/${listUser.find(userItem => (
+                                        userItem.id === hiringItem.members.ofUserId
+                                    )).image}`)} alt='avatar' />
+                                    <div>
+                                        <h2 className={cx('hiried-name')}>
+                                            {listUser.find(userItem => (
+                                                userItem.id === hiringItem.members.ofUserId
+                                            )).name}
+                                        </h2>
+                                        <p>
+                                            Công việc: {listTasks.find(taskItem => (
+                                                taskItem.id === hiringItem.taskId
+                                            )).name}
+                                        </p>
+                                        {userData?.role === 0 ? <></>
+                                            : <p>Địa chỉ: {listUser.find(userItem => (
+                                                userItem.id === hiringItem.members.ofUserId
+                                            )).address}
+                                            </p>}
+                                        <p>Điện thoại: {listUser.find(userItem => (
+                                            userItem.id === hiringItem.members.ofUserId
+                                        )).phone
+                                        }
+                                        </p>
+                                        {/* <button onClick={e => connectTasker(hiringItem.members.ofUserId, hiringItem.id)}>Kết nối</button> */}
+                                        <Link
+                                            className={cx('btn-connect')}
+                                            to={`/hiring/${hiringItem.members.toUserId}/${hiringItem.id}`}
+                                            onClick={() => setSelectedRoom(hiringItem.id)}
+                                        >
+                                            Kết nối
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div> */}
+                            ))}
+
+                            <h3>Lịch sử thuê</h3>
+                            {contract2.map(hiringItem => (
+                                !!(hiringItem?.activity === 2) &&
+                                <div className={cx('hiried')} key={hiringItem?.id}>
+                                    <img src={require(`../../api-tasksilver/Photos/${listUser.find(userItem => (
+                                        userItem.id === hiringItem.members.ofUserId
+                                    )).image}`)} alt='avatar' />
+                                    <div>
+                                        <h2 className={cx('hiried-name')}>
+                                            {listUser.find(userItem => (
+                                                userItem.id === hiringItem.members.ofUserId
+                                            )).name}
+                                        </h2>
+                                        <p>
+                                            Công việc: {listTasks.find(taskItem => (
+                                                taskItem.id === hiringItem.taskId
+                                            )).name}
+                                        </p>
+                                        <p>Thời gian: 1h30p</p>
+                                        <p>
+                                            Tổng phí: {listUser.find(userItem => (
+                                                userItem.id === hiringItem.members.toUserId
+                                            )).price} đ
+                                        </p>
+                                    </div>
+                                    <div className={cx('hiried-time')}>
+                                        {hiringItem?.id}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
-            </div>
-                : <></>
-            }
+            </div>}
         </div>
     )
 }
